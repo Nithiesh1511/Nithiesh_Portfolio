@@ -1,5 +1,5 @@
 /* ===========================================================================
-   Nithiesh Thulasimani — portfolio
+   Nithiesh Thulasimani - portfolio
    A forest. Day is a sunlit clearing, night is the same wood lit by
    fireflies. Shapes borrow from leaves (two soft corners, two tight), lines
    borrow from roots, and every piece of live state is fern green.
@@ -652,7 +652,7 @@ ul {
   line-height: 1.02;
 }
 
-/* The headline is written as two lines and must stay two lines — a wrap turns
+/* The headline is written as two lines and must stay two lines - a wrap turns
    the masked reveal into four staggered fragments. */
 .hero__h1 .mask-line__inner {
   white-space: nowrap;
@@ -1542,6 +1542,202 @@ a.case:hover {
   animation: sprout 1.2s var(--ease-in-out) infinite;
 }
 
+/* -------------------------------------------------------------- page tree */
+
+/* Room for the tree: on anything wider than a phone, every section below the
+   hero leaves an extra band on its left for the trunk and its branches. */
+:root {
+  --tree-room: 0px;
+}
+
+@media (min-width: 761px) {
+  :root {
+    --tree-room: clamp(36px, 4.5vw, 64px);
+  }
+
+  .section,
+  .work__inner,
+  .contact__inner,
+  .colophon {
+    padding-left: calc(var(--gutter) + var(--tree-room));
+  }
+
+  .work {
+    --col: calc(max(var(--gutter), calc((100vw - 1380px) / 2 + var(--gutter))) + var(--tree-room));
+  }
+}
+
+.page-tree {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.pt-ghost {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 2;
+  stroke-dasharray: 2 8;
+  stroke-linecap: round;
+}
+
+.pt-trunk-shadow {
+  fill: none;
+  stroke: color-mix(in srgb, var(--bark) 70%, #000);
+  stroke-width: 10;
+  stroke-linecap: round;
+  opacity: 0.35;
+}
+
+.pt-trunk {
+  fill: none;
+  stroke: url(#pt-bark);
+  stroke-width: 7;
+  stroke-linecap: round;
+}
+
+.pt-trunk-light {
+  fill: none;
+  stroke: rgba(255, 244, 220, 0.35);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  transform: translateX(-1.6px);
+}
+
+.pt-twig {
+  fill: none;
+  stroke: var(--bark);
+  stroke-width: 3.2;
+  stroke-linecap: round;
+}
+
+.pt-leaf {
+  stroke-width: 0.9;
+  stroke-linejoin: round;
+}
+
+.pt-leaf--fern {
+  fill: url(#pt-fern);
+  stroke: color-mix(in srgb, var(--signal) 80%, #000);
+}
+
+.pt-leaf--lichen {
+  fill: url(#pt-lichen);
+  stroke: color-mix(in srgb, var(--teal) 75%, #000);
+}
+
+.pt-leaf--autumn {
+  fill: url(#pt-autumn);
+  stroke: color-mix(in srgb, var(--amber) 80%, #000);
+}
+
+.pt-leaf__vein {
+  fill: none;
+  stroke: rgba(255, 255, 240, 0.55);
+  stroke-width: 0.9;
+  stroke-linecap: round;
+}
+
+/* The breeze: every leaf rocks gently about its stem. */
+.pt-sway {
+  transform-box: fill-box;
+  transform-origin: 0% 100%;
+  animation: pt-sway 4.2s var(--ease-in-out) infinite alternate;
+}
+
+@keyframes pt-sway {
+  from {
+    transform: rotate(-6deg);
+  }
+  to {
+    transform: rotate(7deg);
+  }
+}
+
+.pt-petal {
+  fill: color-mix(in srgb, #ffd9e6 75%, var(--card));
+  stroke: color-mix(in srgb, #e89ab4 60%, transparent);
+  stroke-width: 0.7;
+}
+
+.pt-blossom__heart {
+  fill: var(--glow);
+  stroke: var(--amber);
+  stroke-width: 0.8;
+}
+
+/* A reached branch flashes green once as its leaves open, then keeps a
+   soft glow. */
+.pt-branch[data-on] .pt-leaf {
+  animation: pt-flash 1.8s var(--ease) both;
+}
+
+@keyframes pt-flash {
+  0% {
+    filter: none;
+  }
+  35% {
+    filter: brightness(1.35) drop-shadow(0 0 6px #6ee06a) drop-shadow(0 0 14px rgba(95, 211, 90, 0.55));
+  }
+  100% {
+    filter: drop-shadow(0 0 3px rgba(95, 211, 90, 0.4));
+  }
+}
+
+/* Sparks drifting up from a branch as it arrives. */
+.pt-spark {
+  fill: var(--glow);
+  opacity: 0;
+}
+
+.pt-branch[data-on] .pt-spark {
+  animation: pt-spark 1.6s var(--ease) both;
+}
+
+@keyframes pt-spark {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.4);
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(6px, -34px) scale(1);
+  }
+}
+
+:root[data-theme='dark'] .pt-spark {
+  filter: drop-shadow(0 0 4px var(--glow));
+}
+
+.pt-bud__glow {
+  fill: color-mix(in srgb, #6ee06a 35%, transparent);
+  animation: pt-bud 1.4s var(--ease-in-out) infinite;
+}
+
+.pt-bud__core {
+  fill: #9af08f;
+  stroke: var(--signal);
+  stroke-width: 1.4;
+}
+
+@keyframes pt-bud {
+  0%,
+  100% {
+    opacity: 0.45;
+    r: 9px;
+  }
+  50% {
+    opacity: 1;
+    r: 14px;
+  }
+}
+
 /* --------------------------------------------------------------- learning */
 
 .learning__grid {
@@ -1774,7 +1970,7 @@ a.seedling__cert:hover {
   animation: leaf-glow 2.6s var(--ease-in-out) infinite;
 }
 
-/* The current role keeps swaying as it glows — it is still growing. */
+/* The current role keeps swaying as it glows - it is still growing. */
 .stint[data-lit] .stint__node[data-current] {
   animation: leaf-glow 2.6s var(--ease-in-out) infinite, sprout 3.2s var(--ease-in-out) infinite;
 }
@@ -2000,7 +2196,7 @@ a.seedling__cert:hover {
 }
 
 @media (max-width: 900px) {
-  /* The index stays, stripped to labels — a one-page site with no way to jump
+  /* The index stays, stripped to labels - a one-page site with no way to jump
      is worse than a cramped row. */
   .nav__index a {
     padding: 0.35rem 0.5rem;

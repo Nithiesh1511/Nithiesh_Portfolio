@@ -31,7 +31,7 @@ export default function Hero({ ready, theme }) {
           </Suspense>
         )}
         <span className="hero__canvas-caption mono" aria-hidden>
-          fig. 01 — the wood wide web · live
+          fig. 01 - the wood wide web · live
         </span>
       </motion.div>
 
@@ -96,7 +96,7 @@ export default function Hero({ ready, theme }) {
         </div>
         <div>
           <dt className="mono">grows in</dt>
-          <dd>{profile.domain}</dd>
+          <dd>Code, Create, Evolve</dd>
         </div>
         <div>
           <dt className="mono">season</dt>

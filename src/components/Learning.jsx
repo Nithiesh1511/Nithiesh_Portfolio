@@ -11,7 +11,7 @@ const fmt = (m) => (m >= 60 ? `${Math.floor(m / 60)}h${m % 60 ? ` ${m % 60}m` : 
 
 /* A seedling drawn to the course's progress: the stem grows with it, and each
    pair of leaves unfurls as a threshold is passed. Even a course just started
-   shows its first two leaves — it has been planted. */
+   shows its first two leaves - it has been planted. */
 function Sapling({ progress }) {
   const ref = useRef(null)
   const seen = useInView(ref, { once: true, margin: '-10% 0px' })
@@ -19,7 +19,7 @@ function Sapling({ progress }) {
   const on = seen || reduced
   const stem = 0.45 + progress * 0.55
   const t = (delay) => ({ duration: reduced ? 0 : 0.7, delay: reduced ? 0 : delay, ease: EASE })
-  /* Leaves draw their outline in and fill as they fade up — no transforms,
+  /* Leaves draw their outline in and fill as they fade up - no transforms,
      so each one unfurls exactly where it joins the stem. */
   const leaf = (show, delay) => ({
     initial: { pathLength: 0, opacity: 0 },
@@ -49,7 +49,7 @@ function Sapling({ progress }) {
 export default function Learning() {
   return (
     <section className="section learning" id="learning">
-      <SectionHead n="04" title="Learning" note="Seedlings grown — certificates and badges earned along the way." />
+      <SectionHead n="04" title="Learning" note="Seedlings grown - certificates and badges earned along the way." />
 
       <Stagger className="learning__grid" delay={0.08}>
         {learning.map((c) => {

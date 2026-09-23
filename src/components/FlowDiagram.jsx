@@ -7,7 +7,7 @@ import { EASE } from '../lib/motion.js'
 
    Nodes and edges come straight from `flow` in profile.js. Roots grow
    themselves in when the card is first seen, then a spore runs each one with
-   SMIL — no JS timer per card, which matters when four of these are live in a
+   SMIL - no JS timer per card, which matters when four of these are live in a
    horizontal track at once.
    --------------------------------------------------------------------------- */
 
@@ -39,7 +39,7 @@ export default function FlowDiagram({ flow, accent = 'signal' }) {
   return (
     <div className="flow" ref={ref} data-accent={accent}>
       <svg viewBox={`-8 -5 ${W + 16} ${H + 10}`} role="img" aria-label="System topology">
-        {/* forest floor — a scatter of soil flecks rather than a drafting grid */}
+        {/* forest floor - a scatter of soil flecks rather than a drafting grid */}
         <defs>
           <pattern id={`g-${flow.nodes[0].id}`} width="12" height="12" patternUnits="userSpaceOnUse">
             <circle cx="3" cy="4" r="0.7" fill="currentColor" className="flow__grid" />

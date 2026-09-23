@@ -1,31 +1,31 @@
 /* ---------------------------------------------------------------------------
-   Design tokens — the forest.
+   Design tokens - the forest.
 
    Light is a sunlit clearing: parchment-warm moss for the page, deep pine for
    ink, and a single fern green carrying every piece of live state, with lichen
    and autumn amber as the two supporting accents. Dark is the same wood at
-   night — pine-black canopy, moonlit sage ink and firefly-yellow glow.
+   night - pine-black canopy, moonlit sage ink and firefly-yellow glow.
    --------------------------------------------------------------------------- */
 
 :root {
-  /* — surfaces — */
+  /* - surfaces - */
   --paper: #f2efe2;
   --paper-2: #e8e4d2;
   --card: #fbf9f1;
   --card-2: #f5f2e6;
 
-  /* — ink — */
+  /* - ink - */
   --ink: #15261c;
   --ink-2: #33483a;
   --ink-3: #5f7263;
   --ink-4: #93a191;
 
-  /* — line work — */
+  /* - line work - */
   --line: rgba(21, 38, 28, 0.13);
   --line-2: rgba(21, 38, 28, 0.07);
   --grid: rgba(47, 107, 63, 0.07);
 
-  /* — signal — */
+  /* - signal - */
   --signal: #2f6b3f;
   --signal-ink: #22502f;
   --signal-soft: rgba(47, 107, 63, 0.11);
@@ -35,25 +35,25 @@
   --amber-soft: rgba(194, 106, 42, 0.13);
   --glow: #e7c14a;
 
-  /* — forest layers, back to front — */
+  /* - forest layers, back to front - */
   --tree-far: #c9d0b4;
   --tree-mid: #a9b893;
   --tree-near: #7f9670;
   --bark: #6b4f36;
   --mist: rgba(242, 239, 226, 0.75);
 
-  /* — elevation. Green-shifted so shadows read as canopy shade. — */
+  /* - elevation. Green-shifted so shadows read as canopy shade. - */
   --shadow-sm: 0 1px 2px rgba(21, 38, 28, 0.05), 0 2px 8px rgba(21, 38, 28, 0.05);
   --shadow: 0 2px 4px rgba(21, 38, 28, 0.04), 0 14px 34px -10px rgba(21, 38, 28, 0.18);
   --shadow-lg: 0 4px 8px rgba(21, 38, 28, 0.05), 0 32px 64px -16px rgba(21, 38, 28, 0.26);
 
-  /* — type — */
+  /* - type - */
   --display: 'Nunito', system-ui, sans-serif;
   --body: 'Nunito', system-ui, sans-serif;
   --mono: 'Nunito', system-ui, sans-serif;
   --serif: 'Nunito', system-ui, sans-serif;
 
-  /* — metrics — */
+  /* - metrics - */
   --gutter: clamp(1.25rem, 4vw, 4.5rem);
   --measure: 62ch;
   --radius: 16px;
@@ -61,7 +61,7 @@
   /* A leaf: two soft corners, two tight ones. */
   --leaf: 22px 6px 22px 6px;
 
-  /* — motion — */
+  /* - motion - */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 

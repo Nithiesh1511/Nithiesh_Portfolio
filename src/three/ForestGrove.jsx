@@ -8,7 +8,7 @@ import { Float, Html } from '@react-three/drei'
 
    The integration topology, told as a forest: an ancient heartwood in the
    middle, five vendor trees in a clearing around it, and a mycelial root
-   network between them carrying glowing spores — the wood wide web is the
+   network between them carrying glowing spores - the wood wide web is the
    original integration layer. Everything is generated from the TREE table
    below, so adding a sixth vendor is one line.
    --------------------------------------------------------------------------- */
@@ -170,21 +170,21 @@ export default function ForestGrove({ still = false, dark = false }) {
 
   return (
     <group ref={group} position={[0.35, 0.15, 0]} scale={0.72}>
-      {/* ——— forest floor ——— */}
+      {/* --- forest floor --- */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, GROUND, 0]} receiveShadow>
         <circleGeometry args={[16, 64]} />
         <meshStandardMaterial color={c.ground} roughness={1} />
       </mesh>
       <Moss colour={c.moss} />
 
-      {/* ——— mycelial roots ——— */}
+      {/* --- mycelial roots --- */}
       {roots.map((r) => (
         <mesh key={r.id} geometry={tubeFor(r.curve)}>
           <meshStandardMaterial color={c.root} roughness={0.8} />
         </mesh>
       ))}
 
-      {/* ——— spores ——— */}
+      {/* --- spores --- */}
       {spores.map((s, i) => (
         <mesh key={i} ref={(el) => (sporeRefs.current[i] = el)} scale={0.05}>
           <sphereGeometry args={[1, 12, 12]} />
@@ -192,7 +192,7 @@ export default function ForestGrove({ still = false, dark = false }) {
         </mesh>
       ))}
 
-      {/* ——— the heartwood ——— */}
+      {/* --- the heartwood --- */}
       <group position={[0, GROUND, 0]}>
         <mesh position={[0, 1.05, 0]} castShadow>
           <cylinderGeometry args={[0.2, 0.36, 2.1, 9]} />
@@ -221,7 +221,7 @@ export default function ForestGrove({ still = false, dark = false }) {
         </group>
       </group>
 
-      {/* The seed at the heart of the grove — the one thing in the scene that
+      {/* The seed at the heart of the grove - the one thing in the scene that
           glows on its own, and the source every spore travels out from. */}
       <Float speed={still ? 0 : 1.2} rotationIntensity={0} floatIntensity={still ? 0 : 0.2}>
         <group ref={heart} position={[0, -0.55, 0.5]}>
@@ -233,7 +233,7 @@ export default function ForestGrove({ still = false, dark = false }) {
         </group>
       </Float>
 
-      {/* ——— vendor trees ——— */}
+      {/* --- vendor trees --- */}
       {trees.map((t) => {
         const top = t.kind === 'pine' ? 2.3 * t.h : 2.05 * t.h
         return (
@@ -242,7 +242,7 @@ export default function ForestGrove({ still = false, dark = false }) {
               {t.kind === 'pine' ? <Pine c={c} canopy={canopyRef()} /> : <RoundTree c={c} canopy={canopyRef()} />}
             </group>
 
-            {/* A ring of glowing mushrooms where the root arrives — the tree's
+            {/* A ring of glowing mushrooms where the root arrives - the tree's
                 own signal colour, so the links read as belonging to it. */}
             {[0, 2.1, 4.2].map((a, j) => (
               <Mushroom
@@ -264,7 +264,7 @@ export default function ForestGrove({ still = false, dark = false }) {
         )
       })}
 
-      {/* ——— falling leaves ——— */}
+      {/* --- falling leaves --- */}
       {leaves.map((l, i) => (
         <mesh key={i} ref={(el) => (leafRefs.current[i] = el)} scale={[0.09, 0.14, 1]}>
           <circleGeometry args={[1, 5]} />
@@ -337,7 +337,7 @@ function Mushroom({ position, size, glow, stem }) {
   )
 }
 
-/* Tufts of moss scattered across the floor — cheap flat-shaded domes, placed
+/* Tufts of moss scattered across the floor - cheap flat-shaded domes, placed
    deterministically so the clearing looks the same on every visit. */
 function Moss({ colour }) {
   const tufts = useMemo(
@@ -357,7 +357,7 @@ function Moss({ colour }) {
   ))
 }
 
-/* Tube geometries are built once per curve and cached on the curve object —
+/* Tube geometries are built once per curve and cached on the curve object -
    cheaper than a useMemo per root and it keeps the JSX above flat. */
 function tubeFor(curve) {
   if (!curve.__tube) curve.__tube = new THREE.TubeGeometry(curve, 64, 0.022, 6, false)

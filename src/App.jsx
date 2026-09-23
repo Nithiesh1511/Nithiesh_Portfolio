@@ -5,6 +5,7 @@ import Contact from './components/Contact.jsx'
 import Hero from './components/Hero.jsx'
 import Learning from './components/Learning.jsx'
 import Nav from './components/Nav.jsx'
+import PageTree from './components/PageTree.jsx'
 import Path from './components/Path.jsx'
 import Stack, { Ticker } from './components/Stack.jsx'
 import Woodland from './components/Woodland.jsx'
@@ -28,6 +29,7 @@ export default function App() {
       <Boot onDone={() => setReady(true)} />
       <Nav theme={theme} onToggleTheme={toggleTheme} />
 
+      <PageTree />
       <main>
         <Hero ready={ready} theme={theme} />
         <Ticker />
@@ -39,7 +41,7 @@ export default function App() {
         <Contact />
       </main>
 
-      {/* The page sits in a wood that never scrolls away — only drifts. */}
+      {/* The page sits in a wood that never scrolls away - only drifts. */}
       <Woodland />
     </>
   )

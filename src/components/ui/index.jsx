@@ -140,7 +140,7 @@ export function Counter({ value, suffix = '' }) {
   )
 }
 
-/** Live local time where he actually is — the cheapest possible signal that
+/** Live local time where he actually is - the cheapest possible signal that
  *  the page is a running thing rather than a printout. */
 export function LocalClock({ timezone }) {
   const [now, setNow] = useState(() => new Date())

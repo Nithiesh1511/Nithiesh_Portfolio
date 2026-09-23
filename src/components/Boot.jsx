@@ -26,8 +26,8 @@ function Sprout({ step }) {
   )
 }
 
-/* A boot sequence rather than a spinner. It is deliberately short — under two
-   seconds — and skipped entirely under reduced motion, because a loader is a
+/* A boot sequence rather than a spinner. It is deliberately short - under two
+   seconds - and skipped entirely under reduced motion, because a loader is a
    tax the second time someone visits. */
 export default function Boot({ onDone }) {
   const reduced = useReducedMotion()

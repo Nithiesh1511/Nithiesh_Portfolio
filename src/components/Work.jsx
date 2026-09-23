@@ -60,7 +60,7 @@ export default function Work() {
   const progress = useMotionValue(0)
   const pct = useTransform(progress, [0, 1], ['0%', '100%'])
 
-  /* The gallery is a real horizontal scroller — trackpad swipes, touch, the
+  /* The gallery is a real horizontal scroller - trackpad swipes, touch, the
      scrollbar and the buttons all move it natively, so every card is always
      reachable. The wheel is borrowed only while the row can still move in
      that direction; at either end the page scrolls on as normal. */
@@ -128,7 +128,7 @@ export default function Work() {
         </div>
       </div>
 
-      <div className="work__track" ref={track} tabIndex={0} aria-label="Selected work — scroll sideways">
+      <div className="work__track" ref={track} tabIndex={0} aria-label="Selected work - scroll sideways">
         {projects.map((p) => (
           <Card key={p.id} p={p} />
         ))}

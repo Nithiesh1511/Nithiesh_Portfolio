@@ -22,16 +22,18 @@ export const profile = {
   githubUser: 'Nithiesh1511',
   /* Drop your photo into public/ as "profile" with any common extension; each
      candidate is tried in order, so nothing ever 404s visibly. */
-  portraitCandidates: ['/profile.jpg', '/profile.jpeg', '/profile.png', '/profile.webp', '/avatar.jpg'],
+  portraitCandidates: ['profile.jpg', 'profile.jpeg', 'profile.png', 'profile.webp', 'avatar.jpg'].map(
+    (f) => import.meta.env.BASE_URL + f,
+  ),
 
   headline: ['I build the layer', 'between systems.'],
   standfirst:
-    'Software engineer working on healthcare integrations — the APIs, EDI exchanges and event flows that let clinical, payer and operational systems agree on what just happened.',
+    'Software engineer working on healthcare integrations - the APIs, EDI exchanges and event flows that let clinical, payer and operational systems agree on what just happened.',
   summary:
-    'Most of what I build is invisible by design. A patient books a visit, a coverage check clears, a prescription reaches a pharmacy, a lab result lands back on the right chart — and none of those systems were built to talk to each other. I write the layer that makes them, and the reconciliation that keeps them honest when one of them goes quiet.',
+    'Most of what I build is invisible by design. A patient books a visit, a coverage check clears, a prescription reaches a pharmacy, a lab result lands back on the right chart - and none of those systems were built to talk to each other. I write the layer that makes them, and the reconciliation that keeps them honest when one of them goes quiet.',
 }
 
-/* Rendered as a spec sheet — keep values short, the column is narrow. */
+/* Rendered as a spec sheet - keep values short, the column is narrow. */
 export const spec = [
   ['ROLE', 'Software Engineer'],
   ['ORG', 'App Innovation Technologies'],
@@ -82,7 +84,7 @@ export const principles = [
   {
     n: '03',
     title: 'Failures should be readable',
-    text: 'A payer rejection is a business event, not a stack trace. Errors get mapped into something the product — and the person on support — can act on.',
+    text: 'A payer rejection is a business event, not a stack trace. Errors get mapped into something the product - and the person on support - can act on.',
   },
 ]
 
@@ -94,12 +96,12 @@ export const projects = [
     num: '01',
     title: 'TMX Healthcare Platform',
     kind: 'PLATFORM · API SURFACE',
-    year: '2025 —',
+    year: '2025 -',
     role: 'Backend & integrations',
     summary:
       'A connected healthcare platform that folds clinical, insurance and operational workflows into a single reliable API surface.',
     detail:
-      'The service sits between a patient-facing product and a fleet of third-party healthcare vendors. Every vendor speaks a different dialect — GraphQL here, X12 EDI there, webhooks somewhere else — so it normalises all of them onto one internal contract, then keeps both sides in step as state changes on either end.',
+      'The service sits between a patient-facing product and a fleet of third-party healthcare vendors. Every vendor speaks a different dialect - GraphQL here, X12 EDI there, webhooks somewhere else - so it normalises all of them onto one internal contract, then keeps both sides in step as state changes on either end.',
     facts: [
       ['SURFACE', 'REST + Webhooks'],
       ['UPSTREAM', 'Healthie GraphQL'],
@@ -134,7 +136,7 @@ export const projects = [
     summary:
       'Real-time coverage checks that surface payer rules and authorization requirements before a claim is ever built.',
     detail:
-      'Wraps the X12 270/271 eligibility exchange behind a single call. A 270 goes out to the payer, the 271 comes back as a dense positional document, and the service parses it into plan status, copay, deductible and service-level authorization requirements the product can render directly — instead of discovering the problem weeks later at adjudication.',
+      'Wraps the X12 270/271 eligibility exchange behind a single call. A 270 goes out to the payer, the 271 comes back as a dense positional document, and the service parses it into plan status, copay, deductible and service-level authorization requirements the product can render directly - instead of discovering the problem weeks later at adjudication.',
     facts: [
       ['TRANSACTION', 'X12 270 / 271'],
       ['CLEARINGHOUSE', 'Stedi'],
@@ -200,10 +202,10 @@ export const projects = [
     num: '04',
     title: 'EHR Automation System',
     kind: 'HEALTHCARE · AUTOMATION',
-    year: '2024 —',
+    year: '2024 -',
     role: 'Backend & automation',
     summary:
-      'End-to-end automation for an Electronic Health Record system — data pulled, processed and filed without anyone re-keying it.',
+      'End-to-end automation for an Electronic Health Record system - data pulled, processed and filed without anyone re-keying it.',
     detail:
       'Backend services in .NET Core on SQL Server hold the record of truth. Zoho RPA bots extract data from the systems that have no API and push it through the workflow, Azure WebJobs fire the scheduled and background runs, and Azure DevOps carries every change from commit through CI/CD to an automated deployment.',
     facts: [
@@ -238,7 +240,7 @@ export const projects = [
     kind: 'PERSONAL · TYPESCRIPT',
     year: '2026',
     role: 'Solo build',
-    summary: 'A storefront built end to end in TypeScript — catalogue, cart, checkout and an admin behind it.',
+    summary: 'A storefront built end to end in TypeScript - catalogue, cart, checkout and an admin behind it.',
     detail:
       'React and TypeScript on the front, Supabase for data, auth and storage behind it. Built to own the whole surface for once: schema and row-level policies through to the product page and the admin that writes to it.',
     facts: [
@@ -315,35 +317,35 @@ export const stack = [
    the root, the current role at the growing tip. */
 export const timeline = [
   {
-    period: 'Jul 2019 — May 2022',
+    period: 'Jul 2019 - May 2022',
     title: 'BSc Computer Technology',
     org: 'Sri Krishna Adithya College of Arts and Science',
-    text: 'Bachelor of Science in Computer Technology / Computer Systems Technology — where programming, networks and how machines fit together first clicked.',
+    text: 'Bachelor of Science in Computer Technology / Computer Systems Technology - where programming, networks and how machines fit together first clicked.',
     tags: ['BSc', 'Computer Technology'],
   },
   {
-    period: 'Jul 2022 — Apr 2024',
+    period: 'Jul 2022 - Apr 2024',
     title: 'MSc Computer Science',
     org: 'Bharathiar University',
-    text: 'Master of Science in Computer Science — foundations in systems, data structures and software engineering.',
+    text: 'Master of Science in Computer Science - foundations in systems, data structures and software engineering.',
     tags: ['MSc', 'Computer Science'],
   },
   {
-    period: 'Jan 2024 — Jul 2024',
+    period: 'Jan 2024 - Jul 2024',
     title: 'Software Engineering Intern',
     org: 'iTech Software Group',
     text: 'Built an Employee Management System on .NET and SQL, and backend components for IoT and ATMS applications. Tracked down and fixed major issues, supported functional and integration testing, and worked inside an Agile SDLC with disciplined version control.',
     tags: ['.NET', 'SQL', 'IoT', 'Agile'],
   },
   {
-    period: 'Aug 2024 — 2026',
+    period: 'Aug 2024 - 2026',
     title: 'Junior Software Engineer',
     org: 'iTech Software Group',
-    text: 'Healthcare integration and automation. Built an end-to-end EHR automation system — .NET Core services on SQL Server, Zoho RPA for data extraction and workflow processing, Azure WebJobs for scheduled and background triggers, Azure DevOps for CI/CD and automated deployments — alongside the API contracts, X12 parsing and webhook reconciliation behind the case studies above.',
+    text: 'Healthcare integration and automation. Built an end-to-end EHR automation system - .NET Core services on SQL Server, Zoho RPA for data extraction and workflow processing, Azure WebJobs for scheduled and background triggers, Azure DevOps for CI/CD and automated deployments - alongside the API contracts, X12 parsing and webhook reconciliation behind the case studies above.',
     tags: ['.NET Core', 'SQL Server', 'Zoho RPA', 'Azure WebJobs', 'Azure DevOps'],
   },
   {
-    period: 'Jul 2026 — Present',
+    period: 'Jul 2026 - Present',
     title: 'Software Engineer',
     org: 'App Innovation Technologies',
     // TODO: replace with what you actually build here

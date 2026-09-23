@@ -19,7 +19,7 @@ export function useTheme() {
     try {
       localStorage.setItem(KEY, theme)
     } catch {
-      /* private mode — the toggle still works for this session */
+      /* private mode - the toggle still works for this session */
     }
   }, [theme])
 

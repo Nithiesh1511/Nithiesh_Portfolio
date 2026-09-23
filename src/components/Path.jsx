@@ -62,8 +62,8 @@ export default function Path() {
   }, [scaleY, reduced])
 
   return (
-    <section className="section path">
-      <SectionHead n="05" title="Path" note="Growth rings — where the practice came from." />
+    <section className="section path" id="path">
+      <SectionHead n="05" title="Path" note="Growth rings - where the practice came from." />
 
       <div className="path__list" ref={ref}>
         <span className="path__spine" ref={spine} aria-hidden>

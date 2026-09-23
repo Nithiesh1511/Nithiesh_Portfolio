@@ -5,7 +5,7 @@ import { Bloom, EffectComposer } from '@react-three/postprocessing'
 import ForestGrove from './ForestGrove.jsx'
 
 /* ---------------------------------------------------------------------------
-   The hero canvas — a clearing in the wood.
+   The hero canvas - a clearing in the wood.
 
    Day is warm low sun through the canopy with pollen in the air; night is cool
    moonlight, with fireflies doing the work the sun did. Fog is the page colour,

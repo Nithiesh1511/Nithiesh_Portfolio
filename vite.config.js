@@ -6,6 +6,7 @@ import react from '@vitejs/plugin-react'
 // long before the WebGL bundle has finished arriving.
 export default defineConfig({
   plugins: [react()],
+  base: '/Nithiesh_Portfolio/',
   build: {
     rollupOptions: {
       output: {

@@ -12,7 +12,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion
 const W = 1440
 const H = 320
 
-/** Small deterministic PRNG — the treeline must not reshuffle on re-render. */
+/** Small deterministic PRNG - the treeline must not reshuffle on re-render. */
 function seeded(seed) {
   let s = seed
   return () => {
