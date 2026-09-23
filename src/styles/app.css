@@ -1,0 +1,2142 @@
+/* ===========================================================================
+   Nithiesh Thulasimani — portfolio
+   A forest. Day is a sunlit clearing, night is the same wood lit by
+   fireflies. Shapes borrow from leaves (two soft corners, two tight), lines
+   borrow from roots, and every piece of live state is fern green.
+   =========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  transition: background-color 0.5s var(--ease), color 0.5s var(--ease);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--display);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.04;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+dl,
+dd,
+ol,
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+::selection {
+  background: var(--signal);
+  color: var(--paper);
+}
+
+:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.mono {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------------------- woodland */
+
+.woodland {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Dappled canopy light by day, a deep blue-green sky by night. */
+.woodland__sky {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 50% at 82% 0%, color-mix(in srgb, var(--glow) 22%, transparent), transparent 70%),
+    radial-gradient(50% 40% at 10% 30%, var(--signal-soft), transparent 70%),
+    linear-gradient(to bottom, var(--paper), var(--paper-2));
+}
+
+/* God rays: a slow fan of light falling from the sun through the canopy. */
+.woodland__sky::after {
+  content: '';
+  position: absolute;
+  top: -30vh;
+  right: -10vw;
+  width: 110vw;
+  height: 140vh;
+  background: repeating-conic-gradient(
+    from 200deg at 88% 8%,
+    color-mix(in srgb, var(--glow) 12%, transparent) 0deg 3deg,
+    transparent 3deg 11deg
+  );
+  mask-image: radial-gradient(70% 70% at 88% 8%, #000, transparent 75%);
+  animation: rays 26s var(--ease-in-out) infinite alternate;
+  opacity: 0.8;
+}
+
+:root[data-theme='dark'] .woodland__sky::after {
+  opacity: 0.18;
+}
+
+@keyframes rays {
+  to {
+    transform: rotate(4deg);
+  }
+}
+
+/* The sun by day, the moon by night. */
+.woodland__orb-wrap {
+  position: absolute;
+  inset: 0;
+}
+
+.woodland__orb {
+  position: absolute;
+  top: 9vh;
+  right: 9vw;
+  width: clamp(70px, 9vw, 130px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, #fff6d6, var(--glow) 70%);
+  box-shadow: 0 0 80px 30px color-mix(in srgb, var(--glow) 30%, transparent);
+  opacity: 0.55;
+}
+
+:root[data-theme='dark'] .woodland__orb {
+  background: radial-gradient(circle at 38% 38%, #f4f7ec, #c9d5c0 62%, #a9b8a2);
+  box-shadow: 0 0 60px 18px rgba(220, 235, 210, 0.16), inset -14px -10px 0 rgba(0, 0, 0, 0.12);
+  opacity: 0.85;
+}
+
+.woodland__trees {
+  position: absolute;
+  left: -2%;
+  bottom: 0;
+  width: 104%;
+}
+
+.woodland__trees path {
+  fill: currentColor;
+}
+
+.woodland__trees--far {
+  height: 42vh;
+  color: var(--tree-far);
+  opacity: 0.55;
+}
+
+.woodland__trees--mid {
+  height: 32vh;
+  color: var(--tree-mid);
+  opacity: 0.45;
+}
+
+.woodland__trees--near {
+  height: 22vh;
+  color: var(--tree-near);
+  opacity: 0.35;
+}
+
+:root[data-theme='dark'] .woodland__trees--far,
+:root[data-theme='dark'] .woodland__trees--mid,
+:root[data-theme='dark'] .woodland__trees--near {
+  opacity: 1;
+}
+
+/* Ground mist, sitting between the treelines and the page. */
+.woodland__mist {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 30vh;
+  background: linear-gradient(to top, var(--mist), transparent);
+}
+
+/* Fireflies at night, drifting pollen by day. */
+.motes span {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--glow);
+  opacity: 0;
+  animation-name: drift;
+  animation-timing-function: var(--ease-in-out);
+  animation-iteration-count: infinite;
+}
+
+:root[data-theme='dark'] .motes span {
+  box-shadow: 0 0 10px 3px color-mix(in srgb, var(--glow) 70%, transparent);
+}
+
+@keyframes drift {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.75;
+  }
+  50% {
+    transform: translate(28px, -40px);
+    opacity: 0.2;
+  }
+  70% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-18px, -90px);
+    opacity: 0;
+  }
+}
+
+.leaves span {
+  position: absolute;
+  top: -8vh;
+  animation-name: fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  opacity: 0.5;
+}
+
+.leaves svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: var(--signal);
+  animation: sway 3.4s var(--ease-in-out) infinite alternate;
+}
+
+.leaves span[data-tone='1'] svg {
+  fill: var(--amber);
+}
+
+.leaves span[data-tone='2'] svg {
+  fill: var(--teal);
+}
+
+.leaves__vein {
+  fill: none;
+  stroke: var(--paper);
+  stroke-width: 1;
+  opacity: 0.5;
+}
+
+@keyframes fall {
+  to {
+    transform: translate(-12vw, 118vh) rotate(420deg);
+  }
+}
+
+@keyframes sway {
+  from {
+    transform: translateX(-14px) rotate(-18deg);
+  }
+  to {
+    transform: translateX(14px) rotate(22deg);
+  }
+}
+
+/* ------------------------------------------------------------------- boot */
+
+.boot {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--paper);
+  display: grid;
+  place-items: center;
+}
+
+.boot__inner {
+  width: min(340px, 78vw);
+}
+
+.boot__head {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.8rem;
+  margin-bottom: 1.6rem;
+}
+
+.boot__sprout {
+  width: 64px;
+  height: 64px;
+  overflow: visible;
+}
+
+.boot__soil {
+  fill: none;
+  stroke: var(--bark);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.boot__stem {
+  fill: none;
+  stroke: var(--signal);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.boot__leaf {
+  fill: var(--signal-soft);
+  stroke: var(--signal);
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+}
+
+.boot__leaf--top {
+  fill: color-mix(in srgb, var(--glow) 35%, transparent);
+  stroke: var(--amber);
+}
+
+.boot__mark {
+  font-family: var(--display);
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--signal-ink);
+}
+
+.boot__list {
+  display: grid;
+  gap: 0.45rem;
+  margin-bottom: 1.2rem;
+}
+
+.boot__line {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--ink-4);
+  opacity: 0.4;
+  transition: opacity 0.35s var(--ease), color 0.35s var(--ease);
+}
+
+.boot__line[data-on] {
+  opacity: 1;
+  color: var(--ink-3);
+}
+
+.boot__verb {
+  color: var(--signal);
+  min-width: 56px;
+}
+
+.boot__dots {
+  flex: 1;
+  border-bottom: 1px dotted var(--line);
+  transform: translateY(-3px);
+}
+
+.boot__line[data-on] .boot__ok {
+  color: var(--teal);
+}
+
+.boot__bar {
+  height: 4px;
+  border-radius: 4px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.boot__bar span {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(to right, var(--signal), var(--teal), var(--glow));
+  transform-origin: left;
+}
+
+/* -------------------------------------------------------------------- nav */
+
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(to right, var(--signal), var(--teal), var(--amber));
+  transform-origin: left;
+  z-index: 120;
+}
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 110;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem var(--gutter);
+  transition: background-color 0.4s var(--ease), border-color 0.4s var(--ease), padding 0.4s var(--ease);
+  border-bottom: 1px solid transparent;
+}
+
+.nav[data-lifted] {
+  background: color-mix(in srgb, var(--paper) 82%, transparent);
+  backdrop-filter: saturate(160%) blur(14px);
+  border-bottom-color: var(--line-2);
+  padding-top: 0.7rem;
+  padding-bottom: 0.7rem;
+}
+
+.nav__mark {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.nav__initials {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 16px 4px 16px 4px;
+  background: var(--signal);
+  color: var(--paper);
+  font-family: var(--display);
+  font-size: 0.8rem;
+  font-weight: 800;
+  transition: border-radius 0.5s var(--ease), transform 0.5s var(--ease);
+  letter-spacing: 0.02em;
+}
+
+.nav__mark:hover .nav__initials {
+  border-radius: 4px 16px 4px 16px;
+  transform: rotate(-8deg);
+}
+
+.nav__name {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.86rem;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.nav__role {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.nav__index {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.nav__index a {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 14px 4px 14px 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink-2);
+  transition: color 0.25s, background-color 0.25s;
+}
+
+.nav__index a:hover {
+  color: var(--ink);
+  background: var(--signal-soft);
+}
+
+.nav__index a[data-active] {
+  color: var(--ink);
+  background: var(--signal-soft);
+}
+
+.nav__n {
+  font-size: 0.56rem;
+  color: var(--signal);
+}
+
+.nav__right {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink-3);
+  background: var(--card);
+}
+
+.status__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--teal) 60%, transparent);
+  animation: pulse 2.6s var(--ease-in-out) infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--teal) 55%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 7px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+.icon-btn {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--amber);
+  cursor: pointer;
+  transition: color 0.25s, border-color 0.25s, transform 0.5s var(--ease);
+}
+
+.icon-btn:hover {
+  border-color: var(--amber);
+  transform: rotate(40deg);
+}
+
+/* ------------------------------------------------------------------- hero */
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding: 7rem var(--gutter) 8rem;
+  overflow: hidden;
+}
+
+.hero__canvas {
+  position: absolute;
+  inset: 0 0 0 30%;
+  z-index: 0;
+  /* The ground plane ends wherever the canvas does, which leaves a hard
+     vertical seam against the page. Fade the edges instead. */
+  mask-image: linear-gradient(to right, transparent, #000 16%),
+    linear-gradient(to bottom, #000 78%, transparent);
+  mask-composite: intersect;
+  -webkit-mask-composite: source-in;
+}
+
+.hero__canvas canvas {
+  touch-action: pan-y !important;
+}
+
+.hero__canvas-caption {
+  position: absolute;
+  right: var(--gutter);
+  bottom: 9rem;
+  color: var(--ink-3);
+  font-size: 0.6rem;
+}
+
+.hero__copy {
+  position: relative;
+  z-index: 1;
+  max-width: 41rem;
+  width: 100%;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 1.6rem;
+}
+
+.eyebrow {
+  padding: 0.35rem 0.8rem 0.35rem 0.6rem;
+  border-radius: 16px 4px 16px 4px;
+  background: var(--signal-soft);
+  color: var(--signal-ink);
+  font-weight: 700;
+}
+
+.eyebrow__leaf {
+  color: var(--signal);
+  animation: sprout 3.2s var(--ease-in-out) infinite;
+  transform-origin: bottom center;
+}
+
+@keyframes sprout {
+  0%,
+  100% {
+    transform: rotate(-8deg);
+  }
+  50% {
+    transform: rotate(8deg) scale(1.08);
+  }
+}
+
+.hero__h1 {
+  font-size: clamp(2.3rem, 5.2vw, 4.6rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+}
+
+/* The headline is written as two lines and must stay two lines — a wrap turns
+   the masked reveal into four staggered fragments. */
+.hero__h1 .mask-line__inner {
+  white-space: nowrap;
+}
+
+.mask-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.mask-line__inner {
+  display: block;
+}
+
+.hero__h1 .mask-line:last-child .mask-line__inner {
+  background: linear-gradient(100deg, var(--signal) 10%, var(--teal) 55%, var(--amber) 95%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero__standfirst {
+  margin-top: 1.8rem;
+  max-width: 30rem;
+  font-size: clamp(0.98rem, 1.1vw, 1.08rem);
+  font-weight: 300;
+  line-height: 1.68;
+  color: var(--ink-2);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 2.2rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.2rem;
+  border-radius: var(--leaf);
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  font-size: 0.88rem;
+  font-weight: 700;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s, border-radius 0.5s var(--ease);
+}
+
+/* On hover the leaf flips: the soft and tight corners swap sides. */
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+  border-color: var(--signal);
+  border-radius: 6px 22px 6px 22px;
+}
+
+.btn--solid {
+  background: linear-gradient(135deg, var(--signal), var(--signal-ink));
+  color: var(--paper);
+  border-color: transparent;
+}
+
+.btn--solid:hover {
+  border-color: transparent;
+}
+
+.btn__out {
+  opacity: 0.5;
+}
+
+.readout {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--line);
+  background: color-mix(in srgb, var(--card) 65%, transparent);
+  backdrop-filter: blur(10px) saturate(140%);
+}
+
+.readout > div {
+  padding: 0.9rem var(--gutter);
+  border-right: 1px solid var(--line-2);
+}
+
+.readout > div:last-child {
+  border-right: 0;
+}
+
+.readout dt {
+  color: var(--signal);
+  margin-bottom: 0.25rem;
+}
+
+.readout dd {
+  margin: 0;
+  font-size: 0.84rem;
+  color: var(--ink-2);
+}
+
+.readout__live {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+/* ----------------------------------------------------------------- ticker */
+
+.ticker {
+  overflow: hidden;
+  border-block: 1px solid var(--line);
+  background: linear-gradient(90deg, var(--signal-ink), var(--signal), var(--signal-ink));
+  color: var(--paper);
+  padding: 0.85rem 0;
+}
+
+:root[data-theme='dark'] .ticker {
+  background: linear-gradient(90deg, #13301f, #1d4a2c, #13301f);
+  color: var(--ink);
+}
+
+.ticker__row {
+  display: flex;
+  width: max-content;
+  gap: 2rem;
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  animation: marquee 42s linear infinite;
+}
+
+.ticker__row span {
+  display: inline-flex;
+  align-items: center;
+  gap: 2rem;
+  white-space: nowrap;
+}
+
+.ticker__row i {
+  display: inline-flex;
+  color: var(--glow);
+  font-style: normal;
+}
+
+.ticker__row span:nth-child(odd) i {
+  transform: rotate(90deg) scaleX(-1);
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* --------------------------------------------------------------- sections */
+
+.section {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: clamp(5rem, 11vh, 9rem) var(--gutter);
+}
+
+.section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  position: relative;
+  padding-bottom: 1.4rem;
+  margin-bottom: 3rem;
+}
+
+/* A root line instead of a hairline: a gentle wave drawn with a mask so it
+   takes the theme colour. */
+.section-head::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 8px;
+  background: var(--ink-4);
+  opacity: 0.55;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='8' viewBox='0 0 80 8'%3E%3Cpath d='M0 4 Q10 0 20 4 T40 4 T60 4 T80 4' fill='none' stroke='black' stroke-width='1.4'/%3E%3C/svg%3E") repeat-x left center / 80px 8px;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='8' viewBox='0 0 80 8'%3E%3Cpath d='M0 4 Q10 0 20 4 T40 4 T60 4 T80 4' fill='none' stroke='black' stroke-width='1.4'/%3E%3C/svg%3E") repeat-x left center / 80px 8px;
+}
+
+.section-head__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: var(--ink);
+}
+
+.section-head__label .mono {
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.sprig {
+  display: inline-flex;
+  align-items: center;
+  color: var(--signal);
+}
+
+.sprig__stem {
+  width: 22px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--bark);
+  opacity: 0.7;
+}
+
+.sprig svg {
+  margin-left: -2px;
+  transform: rotate(45deg);
+}
+
+.section-head__note {
+  max-width: 30rem;
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: var(--ink-3);
+}
+
+/* ------------------------------------------------------------------ about */
+
+.about__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: start;
+}
+
+.lit {
+  font-family: var(--display);
+  font-size: clamp(1.3rem, 2.3vw, 2rem);
+  font-weight: 600;
+  line-height: 1.38;
+  letter-spacing: -0.025em;
+  text-wrap: pretty;
+}
+
+.lit__w {
+  display: inline-block;
+  margin-right: 0.26em;
+}
+
+.principles {
+  display: grid;
+  gap: 1.6rem;
+  margin-top: 3.2rem;
+  padding-top: 2.4rem;
+  border-top: 1px dashed var(--line);
+}
+
+.principle {
+  display: grid;
+  grid-template-columns: 2.6rem 1fr;
+  gap: 1rem;
+}
+
+.principle__n {
+  display: grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 16px 3px 16px 3px;
+  background: var(--signal-soft);
+  color: var(--signal-ink);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  transition: transform 0.5s var(--ease), border-radius 0.5s var(--ease);
+}
+
+.principle:hover .principle__n {
+  transform: rotate(-12deg);
+  border-radius: 3px 16px 3px 16px;
+}
+
+.principle h3 {
+  font-size: 1.08rem;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  margin-bottom: 0.35rem;
+}
+
+.principle p {
+  font-size: 0.92rem;
+  font-weight: 300;
+  color: var(--ink-3);
+  max-width: 44ch;
+}
+
+.about__side {
+  display: grid;
+  gap: 1.6rem;
+  position: sticky;
+  top: 6rem;
+}
+
+.portrait {
+  margin: 0;
+}
+
+.portrait__plate {
+  position: relative;
+  border-radius: 90px 14px 90px 14px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--card-2);
+  box-shadow: var(--shadow);
+}
+
+.portrait__plate img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  filter: saturate(0.92) contrast(1.04);
+  transition: transform 0.9s var(--ease), filter 0.6s var(--ease);
+}
+
+.portrait:hover .portrait__plate img {
+  transform: scale(1.03);
+  filter: saturate(1) contrast(1);
+}
+
+/* Dappled light moving slowly across the photo, as if through leaves. */
+.portrait__light {
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(18% 14% at 30% 30%, color-mix(in srgb, var(--glow) 28%, transparent), transparent 70%),
+    radial-gradient(14% 12% at 70% 55%, color-mix(in srgb, var(--glow) 22%, transparent), transparent 70%),
+    radial-gradient(16% 12% at 40% 80%, color-mix(in srgb, var(--glow) 18%, transparent), transparent 70%);
+  mix-blend-mode: soft-light;
+  animation: dapple 11s var(--ease-in-out) infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes dapple {
+  to {
+    transform: translate(8%, -6%) rotate(6deg);
+  }
+}
+
+/* A vine climbing over the top-left of the plate. */
+.portrait__vine {
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  width: 46%;
+  pointer-events: none;
+}
+
+.portrait__vine-stem {
+  fill: none;
+  stroke: var(--signal);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+
+.portrait__vine-leaf {
+  fill: var(--signal);
+  opacity: 0.9;
+}
+
+.portrait figcaption {
+  margin-top: 0.6rem;
+  color: var(--ink-4);
+}
+
+.spec {
+  border: 1px solid var(--line);
+  border-radius: var(--leaf);
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.spec__head {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--signal-soft);
+  color: var(--signal-ink);
+  font-weight: 800;
+}
+
+.spec__row {
+  display: grid;
+  grid-template-columns: 6.4rem 1fr;
+  gap: 0.75rem;
+  padding: 0.55rem 1rem;
+  border-bottom: 1px dashed var(--line-2);
+}
+
+.spec__row:last-child {
+  border-bottom: 0;
+}
+
+.spec__row dt {
+  color: var(--ink-4);
+  padding-top: 0.15rem;
+}
+
+.spec__row dd {
+  margin: 0;
+  font-size: 0.84rem;
+  color: var(--ink-2);
+}
+
+/* ------------------------------------------------------------------- work */
+
+.work {
+  position: relative;
+  padding: clamp(4rem, 9vh, 7rem) 0;
+  /* Left edge of the 1380px content column, shared by the header and the
+     first card so they line up at every width. */
+  --col: max(var(--gutter), calc((100vw - 1380px) / 2 + var(--gutter)));
+}
+
+.work__inner {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.work__bar {
+  flex: 0 0 auto;
+}
+
+.work__bar .section-head {
+  margin-bottom: 1.2rem;
+}
+
+.work__meter {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--ink-4);
+  margin-bottom: 2rem;
+}
+
+.work__rail {
+  position: relative;
+  flex: 1;
+  max-width: 420px;
+  height: 4px;
+  border-radius: 4px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.work__rail-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 4px;
+  background: linear-gradient(to right, var(--signal), var(--teal));
+}
+
+.work__nav {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.work__nav .icon-btn {
+  color: var(--signal);
+}
+
+.work__nav .icon-btn:hover {
+  transform: translateY(-1px);
+  border-color: var(--signal);
+}
+
+.work__nav .icon-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+  transform: none;
+  border-color: var(--line);
+}
+
+/* A native horizontal scroller running edge to edge, snapping card by card.
+   The scrollbar is restyled as a thin vine. */
+.work__track {
+  display: flex;
+  gap: 1.6rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--col);
+  padding: 0.6rem var(--col) 1.4rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--signal) var(--line-2);
+}
+
+.work__track:focus-visible {
+  outline-offset: -4px;
+}
+
+.work__track::-webkit-scrollbar {
+  height: 6px;
+}
+
+.work__track::-webkit-scrollbar-track {
+  background: var(--line-2);
+  border-radius: 6px;
+  margin-inline: var(--col);
+}
+
+.work__track::-webkit-scrollbar-thumb {
+  background: linear-gradient(to right, var(--signal), var(--teal));
+  border-radius: 6px;
+}
+
+.case {
+  flex: 0 0 auto;
+  width: min(880px, 82vw);
+  scroll-snap-align: start;
+  position: relative;
+  display: block;
+  padding: 1.9rem 1.7rem 1.7rem;
+  border: 1px solid var(--line);
+  border-radius: 40px 10px 40px 10px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease), border-color 0.3s;
+}
+
+/* A canopy band across the top in the card's own accent. */
+.case::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 5px;
+  background: linear-gradient(to right, var(--case-accent, var(--signal)), transparent);
+}
+
+/* A large faint leaf in the corner, like a pressed specimen. */
+.case::after {
+  content: '';
+  position: absolute;
+  right: -34px;
+  bottom: -34px;
+  width: 170px;
+  height: 170px;
+  background: var(--case-accent, var(--signal));
+  opacity: 0.07;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2C6 6 4 12 6 18c1 2 3 4 6 4 3 0 5-2 6-4 2-6 0-12-6-16Z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2C6 6 4 12 6 18c1 2 3 4 6 4 3 0 5-2 6-4 2-6 0-12-6-16Z'/%3E%3C/svg%3E") center / contain no-repeat;
+  /* Tip pointing up into the card, stem tucked off the corner. */
+  transform: rotate(-135deg);
+  pointer-events: none;
+  transition: transform 0.9s var(--ease), opacity 0.6s;
+}
+
+.case:hover::after {
+  transform: rotate(-120deg) scale(1.08);
+  opacity: 0.12;
+}
+
+a.case:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--case-accent, var(--signal));
+}
+
+.case__head {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px dashed var(--line);
+  color: var(--ink-4);
+}
+
+.case__num {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--case-accent, var(--signal));
+}
+
+.case__kind {
+  flex: 1;
+}
+
+.case[data-accent='teal'] {
+  --case-accent: var(--teal);
+}
+
+.case[data-accent='amber'] {
+  --case-accent: var(--amber);
+}
+
+.case[data-accent='signal'] {
+  --case-accent: var(--signal);
+}
+
+.case__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+  gap: 1.6rem 2rem;
+  padding-top: 1.2rem;
+}
+
+.case__left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.case__title {
+  font-size: clamp(1.4rem, 2.1vw, 1.95rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.case__summary {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--ink-2);
+  line-height: 1.55;
+}
+
+.case__detail {
+  font-size: 0.875rem;
+  font-weight: 300;
+  color: var(--ink-3);
+  line-height: 1.68;
+}
+
+.case__right {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.case__facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem 1rem;
+}
+
+.case__facts dt {
+  color: var(--ink-4);
+  margin-bottom: 0.15rem;
+}
+
+.case__facts dd {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--ink-2);
+}
+
+.case__foot {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px dashed var(--line);
+  color: var(--ink-4);
+}
+
+.case__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--case-accent, var(--signal));
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: auto;
+  padding-top: 0.3rem;
+}
+
+.chips li {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid color-mix(in srgb, var(--signal) 25%, transparent);
+  border-radius: 12px 3px 12px 3px;
+  color: var(--signal-ink);
+  background: var(--signal-soft);
+}
+
+.chips--quiet li {
+  background: transparent;
+  color: var(--ink-3);
+  border-color: var(--line);
+}
+
+/* ------------------------------------------------------- topology diagram */
+
+.flow {
+  border: 1px solid var(--line);
+  border-radius: 24px 8px 24px 8px;
+  background: linear-gradient(to bottom, var(--card-2), color-mix(in srgb, var(--bark) 7%, var(--card-2)));
+  padding: 0.4rem;
+  --accent: var(--signal);
+}
+
+.flow[data-accent='teal'] {
+  --accent: var(--teal);
+}
+
+.flow[data-accent='amber'] {
+  --accent: var(--amber);
+}
+
+.flow svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  color: var(--ink-4);
+}
+
+.flow__grid {
+  color: var(--bark);
+  opacity: 0.45;
+}
+
+/* Edges are roots: solid, rounded, bark-coloured. */
+.flow__edge {
+  stroke: var(--bark);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  opacity: 0.55;
+}
+
+.flow__packet {
+  fill: var(--accent);
+}
+
+.flow__node rect {
+  fill: var(--card);
+  stroke: var(--line);
+  stroke-width: 1;
+}
+
+.flow__node text {
+  font-family: var(--mono);
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  fill: var(--ink-2);
+  text-transform: uppercase;
+}
+
+.flow__node--core rect {
+  fill: var(--signal);
+  stroke: var(--signal);
+}
+
+.flow__node--core text {
+  fill: var(--paper);
+}
+
+.flow__node--vendor rect {
+  stroke: var(--accent);
+  stroke-opacity: 0.55;
+}
+
+.flow__node--edge rect {
+  stroke-dasharray: 3 2;
+}
+
+/* ------------------------------------------------------------------ stack */
+
+.stack__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.4rem;
+}
+
+.stack__group {
+  display: grid;
+  gap: 1.3rem;
+  align-content: start;
+}
+
+.stack__group {
+  padding: 1.4rem;
+  border: 1px solid var(--line);
+  border-radius: var(--leaf);
+  background: color-mix(in srgb, var(--card) 72%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+.stack__group-head {
+  color: var(--signal-ink);
+  font-weight: 800;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px dashed var(--line);
+}
+
+.skill__top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.skill__name {
+  font-size: 0.96rem;
+  font-weight: 700;
+}
+
+.skill__level {
+  color: var(--ink-4);
+}
+
+.skill__note {
+  display: block;
+  margin-top: 0.45rem;
+  font-size: 0.78rem;
+  font-weight: 300;
+  color: var(--ink-3);
+}
+
+.meter {
+  position: relative;
+  display: block;
+  height: 4px;
+  margin-right: 8px;
+  background: var(--line-2);
+  border-radius: 4px;
+}
+
+/* The vine itself. */
+.meter__fill {
+  position: absolute;
+  inset: 0;
+  transform-origin: left;
+  background: linear-gradient(to right, var(--bark), var(--signal) 30%, var(--teal));
+  border-radius: 4px;
+}
+
+/* Little nodes along the vine every tenth. */
+.meter__ticks {
+  position: absolute;
+  inset: -2px 0;
+  background-image: radial-gradient(circle, var(--paper) 1.2px, transparent 1.6px);
+  background-size: 10% 100%;
+  opacity: 0.8;
+}
+
+/* The bud riding the vine's growing tip. */
+.meter__bud {
+  position: absolute;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid color-mix(in srgb, var(--signal) 35%, transparent);
+  color: var(--signal);
+  box-shadow: var(--shadow-sm);
+}
+
+.skill:hover .meter__bud svg {
+  animation: sprout 1.2s var(--ease-in-out) infinite;
+}
+
+/* --------------------------------------------------------------- learning */
+
+.learning__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.6rem;
+}
+
+@media (max-width: 760px) {
+  .learning__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.seedling {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.4rem;
+  border: 1px solid var(--line);
+  border-radius: 30px 8px 30px 8px;
+  background: color-mix(in srgb, var(--card) 78%, transparent);
+  backdrop-filter: blur(6px);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease), border-color 0.3s, border-radius 0.6s var(--ease);
+}
+
+.seedling:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+  border-color: var(--signal);
+  border-radius: 8px 30px 8px 30px;
+}
+
+.seedling__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.seedling__topic {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.28rem 0.65rem;
+  border-radius: 12px 3px 12px 3px;
+  background: var(--signal-soft);
+  color: var(--signal-ink);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.seedling__platform {
+  color: var(--ink-4);
+}
+
+.seedling__body {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 1rem;
+  align-items: end;
+}
+
+.seedling__title {
+  font-size: 1.08rem;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  margin-bottom: 0.35rem;
+}
+
+.seedling__meta {
+  font-size: 0.82rem;
+  color: var(--ink-3);
+}
+
+.seedling__foot {
+  display: flex;
+  justify-content: space-between;
+  color: var(--ink-4);
+  margin-top: -0.4rem;
+}
+
+.seedling__foot span:first-child {
+  color: var(--signal);
+  font-weight: 800;
+}
+
+.seedling__cert {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--amber);
+  font-weight: 800;
+}
+
+a.seedling__cert {
+  border-bottom: 1px solid color-mix(in srgb, var(--amber) 40%, transparent);
+  transition: border-color 0.25s;
+}
+
+a.seedling__cert:hover {
+  border-color: var(--amber);
+}
+
+/* Certificates are fully grown: a warm border and a sunlit corner. */
+.seedling[data-certified] {
+  border-color: color-mix(in srgb, var(--amber) 35%, var(--line));
+  background:
+    radial-gradient(120% 80% at 100% 0%, color-mix(in srgb, var(--glow) 16%, transparent), transparent 60%),
+    color-mix(in srgb, var(--card) 78%, transparent);
+}
+
+.sapling {
+  width: 64px;
+  height: 72px;
+  overflow: visible;
+}
+
+.sapling__soil {
+  fill: color-mix(in srgb, var(--bark) 30%, transparent);
+}
+
+.sapling__stem {
+  fill: none;
+  stroke: var(--signal);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+}
+
+.sapling__leaf {
+  fill: color-mix(in srgb, var(--signal) 22%, transparent);
+  stroke: var(--signal);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+
+.sapling__leaf--tip {
+  fill: color-mix(in srgb, var(--glow) 40%, transparent);
+  stroke: var(--amber);
+}
+
+.seedling:hover .sapling {
+  animation: sprout 1.6s var(--ease-in-out) infinite;
+  transform-origin: bottom center;
+}
+
+/* ------------------------------------------------------------------- path */
+
+.path__list {
+  position: relative;
+  display: grid;
+  gap: 2.6rem;
+  padding-left: clamp(1.6rem, 4vw, 3rem);
+}
+
+/* The trunk: bark-textured, and it grows downward as the section is read. */
+.path__spine {
+  position: absolute;
+  left: 0;
+  top: 0.4rem;
+  bottom: 0.4rem;
+  width: 6px;
+  margin-left: -3px;
+  border-radius: 6px;
+  background: var(--line-2);
+}
+
+.path__spine span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  background:
+    repeating-linear-gradient(to bottom, transparent 0 14px, rgba(0, 0, 0, 0.14) 14px 16px),
+    linear-gradient(to right, color-mix(in srgb, var(--bark) 80%, #000), var(--bark), color-mix(in srgb, var(--bark) 80%, #000));
+  transform-origin: top;
+}
+
+.stint {
+  position: relative;
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr);
+  gap: 1.5rem;
+}
+
+/* Each stint is a leaf growing off the trunk on a short twig. */
+.stint__node {
+  position: absolute;
+  left: calc(clamp(1.6rem, 4vw, 3rem) * -1);
+  top: 0.2rem;
+  width: 18px;
+  height: 18px;
+  margin-left: 6px;
+  border-radius: 0 60% 0 60%;
+  background: var(--teal-soft);
+  border: 1.5px solid var(--teal);
+  transform: rotate(-10deg);
+}
+
+.stint__node::before {
+  content: '';
+  position: absolute;
+  left: -9px;
+  bottom: 3px;
+  width: 9px;
+  height: 2px;
+  background: var(--bark);
+}
+
+.stint__node {
+  transition: border-color 0.6s var(--ease), transform 0.6s var(--ease);
+}
+
+.stint__node[data-current] {
+  border-color: var(--signal);
+  animation: sprout 3.2s var(--ease-in-out) infinite;
+}
+
+/* Reached: the leaf turns living green and keeps a slow glow while it is on
+   screen, like new growth catching the light. */
+.stint[data-lit] .stint__node {
+  background: linear-gradient(135deg, #b8f0a0, #4cc24a 55%, var(--signal));
+  border-color: var(--signal);
+  transform: rotate(-10deg) scale(1.25);
+  /* The halo lives in the animation, so it breathes rather than sitting
+     still, and starts the moment the leaf is reached. */
+  animation: leaf-glow 2.6s var(--ease-in-out) infinite;
+}
+
+/* The current role keeps swaying as it glows — it is still growing. */
+.stint[data-lit] .stint__node[data-current] {
+  animation: leaf-glow 2.6s var(--ease-in-out) infinite, sprout 3.2s var(--ease-in-out) infinite;
+}
+
+.stint[data-lit] .stint__period {
+  color: var(--signal);
+}
+
+@keyframes leaf-glow {
+  0%,
+  100% {
+    filter: brightness(1);
+    box-shadow:
+      0 0 0 4px rgba(127, 224, 122, 0.22),
+      0 0 14px 4px rgba(95, 211, 90, 0.6),
+      0 0 32px 10px rgba(95, 211, 90, 0.25);
+  }
+  50% {
+    filter: brightness(1.2);
+    box-shadow:
+      0 0 0 6px rgba(127, 224, 122, 0.3),
+      0 0 22px 8px rgba(95, 211, 90, 0.85),
+      0 0 48px 16px rgba(95, 211, 90, 0.4);
+  }
+}
+
+.stint__period {
+  color: var(--ink-4);
+  padding-top: 0.35rem;
+}
+
+.stint h3 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.7rem;
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.stint__org {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+
+.stint p {
+  font-size: 0.92rem;
+  font-weight: 300;
+  color: var(--ink-3);
+  max-width: 58ch;
+  margin-bottom: 0.8rem;
+}
+
+/* ---------------------------------------------------------------- contact */
+
+.contact {
+  position: relative;
+  /* Open to the woodland behind, so the page ends at the treeline. */
+  background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--card) 55%, transparent) 40%, var(--mist));
+}
+
+.contact__inner {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: clamp(5rem, 12vh, 9rem) var(--gutter) clamp(3rem, 7vh, 5rem);
+}
+
+.contact__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: var(--ink-3);
+  margin-bottom: 1.8rem;
+}
+
+.contact__eyebrow svg {
+  color: var(--signal);
+}
+
+.contact__h2 {
+  font-size: clamp(2rem, 5.4vw, 4.2rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+}
+
+.contact__h2 .mask-line:last-child .mask-line__inner {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  background: linear-gradient(100deg, var(--signal), var(--teal) 60%, var(--amber));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.contact__line p {
+  margin-top: 1.6rem;
+  max-width: 34rem;
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--ink-2);
+}
+
+.contact__links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.2rem;
+  margin-top: 2.6rem;
+}
+
+.contact__primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 1.05rem 1.5rem;
+  border-radius: 30px 8px 30px 8px;
+  background: linear-gradient(135deg, var(--signal), var(--signal-ink));
+  color: var(--paper);
+  font-size: 1rem;
+  font-weight: 700;
+  box-shadow: var(--shadow);
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), border-radius 0.5s var(--ease);
+}
+
+.contact__primary:hover {
+  transform: translateY(-2px);
+  border-radius: 8px 30px 8px 30px;
+  box-shadow: var(--shadow-lg), 0 0 0 6px var(--signal-soft);
+}
+
+.contact__socials {
+  display: flex;
+  gap: 1.2rem;
+}
+
+.contact__socials a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--ink-2);
+  padding-bottom: 2px;
+  border-bottom: 2px solid var(--line);
+  transition: color 0.25s, border-color 0.25s;
+}
+
+.contact__socials a:hover {
+  color: var(--ink);
+  border-color: var(--signal);
+}
+
+.colophon {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.8rem;
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 1.2rem var(--gutter);
+  border-top: 1px dashed var(--line);
+  color: var(--ink-3);
+}
+
+/* ------------------------------------------------------- in-canvas labels */
+
+/* Little trail markers hung above each tree. */
+.pod-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  padding: 0.25rem 0.55rem;
+  border-radius: 10px 3px 10px 3px;
+  background: color-mix(in srgb, var(--card) 82%, transparent);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
+  white-space: nowrap;
+  transform: translateY(2px);
+  user-select: none;
+}
+
+.pod-label__name {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--signal-ink);
+}
+
+.pod-label__sub {
+  font-family: var(--mono);
+  font-size: 0.5rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
+/* ------------------------------------------------------------ responsive */
+
+@media (max-width: 1100px) {
+  .hero__canvas {
+    inset: 0 0 0 28%;
+  }
+
+  .about__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about__side {
+    position: static;
+    grid-template-columns: minmax(0, 260px) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+@media (max-width: 900px) {
+  /* The index stays, stripped to labels — a one-page site with no way to jump
+     is worse than a cramped row. */
+  .nav__index a {
+    padding: 0.35rem 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .nav__n {
+    display: none;
+  }
+
+  /* Absolute positioning puts the scene behind the buttons at this width, so
+     the hero becomes an ordinary column and the scene takes its own band. */
+  .hero {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    padding-top: 6rem;
+    padding-bottom: 9rem;
+  }
+
+  .hero__copy {
+    order: 1;
+  }
+
+  .hero__canvas {
+    order: 2;
+    position: relative;
+    inset: auto;
+    height: 38vh;
+    min-height: 260px;
+    margin-top: 1.5rem;
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+
+  .hero__canvas-caption {
+    display: none;
+  }
+
+  .hero__copy {
+    max-width: none;
+  }
+
+  .readout {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .readout > div:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .readout > div:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--line-2);
+  }
+
+  .case__body {
+    grid-template-columns: 1fr;
+  }
+
+  .stint {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .about__side {
+    grid-template-columns: 1fr;
+  }
+
+  /* The grove is narrow here; markers drop to a name only. */
+  .pod-label {
+    padding: 0.15rem 0.4rem;
+  }
+
+  .pod-label__name {
+    font-size: 0.52rem;
+  }
+
+  .pod-label__sub {
+    display: none;
+  }
+
+  .nav__index {
+    gap: 0;
+  }
+
+  .nav__index a {
+    padding: 0.35rem 0.38rem;
+    font-size: 0.76rem;
+  }
+
+  .nav__name {
+    display: none;
+  }
+
+  .status {
+    display: none;
+  }
+
+  .colophon {
+    justify-content: flex-start;
+  }
+
+  .colophon__mid {
+    order: 3;
+  }
+}
+
+/* ------------------------------------------------------- reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .ticker__row {
+    animation: none;
+  }
+
+  .portrait__light,
+  .woodland__sky::after {
+    animation: none;
+  }
+}
+
+@media (max-width: 430px) {
+  .nav__index {
+    display: none;
+  }
+}
