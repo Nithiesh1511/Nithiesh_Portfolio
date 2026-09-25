@@ -49,7 +49,7 @@ function Sapling({ progress }) {
 export default function Learning() {
   return (
     <section className="section learning" id="learning">
-      <SectionHead n="04" title="Learning" note="Seedlings grown - certificates and badges earned along the way." />
+      <SectionHead n="04" title="Learning" note="Always learning, experimenting and growing the toolkit - certificates earned along the way." />
 
       <Stagger className="learning__grid" delay={0.08}>
         {learning.map((c) => {

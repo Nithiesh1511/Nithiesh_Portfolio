@@ -899,6 +899,16 @@ ul {
   align-items: start;
 }
 
+.about__tagline {
+  margin: 0 0 1.1rem;
+  font-family: var(--display);
+  font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+  font-style: italic;
+  font-weight: 700;
+  color: var(--signal);
+  letter-spacing: -0.01em;
+}
+
 .lit {
   font-family: var(--display);
   font-size: clamp(1.3rem, 2.3vw, 2rem);
@@ -911,6 +921,23 @@ ul {
 .lit__w {
   display: inline-block;
   margin-right: 0.26em;
+}
+
+/* Closing lines of the summary - accent ink over a low highlighter stroke.
+   Padding replaces the word margin so the stroke runs unbroken across gaps. */
+.lit__hl {
+  color: var(--signal-ink);
+  font-weight: 800;
+  background: linear-gradient(transparent 62%, var(--signal-soft) 62%, var(--signal-soft) 92%, transparent 92%);
+}
+
+.lit__w.lit__hl {
+  margin-right: 0;
+  padding-right: 0.26em;
+}
+
+.lit__w.lit__hl:last-child {
+  padding-right: 0;
 }
 
 .principles {

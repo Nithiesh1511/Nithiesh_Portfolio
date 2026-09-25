@@ -13,13 +13,13 @@ export default function Contact() {
         </Reveal>
 
         <h2 className="contact__h2">
-          <MaskedLines lines={['Got a system that', 'needs to talk to another?']} />
+          <MaskedLines lines={["Let's build", 'something.']} />
         </h2>
 
         <Reveal className="contact__line" delay={0.1}>
           <p>
             {profile.available
-              ? 'Every forest runs on the network under it. Open to backend and integration work, and to conversations that have not turned into work yet.'
+              ? 'Have an idea, a technical challenge, or a product that needs building? I am always up for creating useful software, exploring new technologies and solving interesting problems.'
               : 'Currently heads down, but always happy to talk shop.'}
           </p>
         </Reveal>

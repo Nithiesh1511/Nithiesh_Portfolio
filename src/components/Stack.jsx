@@ -1,6 +1,6 @@
 import { Leaf } from 'lucide-react'
 import { stack, ticker } from '../data/profile.js'
-import { Item, Meter, SectionHead, Stagger } from './ui/index.jsx'
+import { Item, SectionHead, Stagger } from './ui/index.jsx'
 
 export function Ticker() {
   const row = [...ticker, ...ticker]
@@ -23,7 +23,7 @@ export function Ticker() {
 export default function Stack() {
   return (
     <section className="section stack" id="stack">
-      <SectionHead n="03" title="Stack" note="What I reach for, and how deep the roots actually go." />
+      <SectionHead n="03" title="Skills" note="What I reach for, layer by layer - from the interface down to the cloud." />
 
       <div className="stack__grid">
         {stack.map((g) => (
@@ -33,9 +33,7 @@ export default function Stack() {
               <Item className="skill" key={it.name}>
                 <div className="skill__top">
                   <span className="skill__name">{it.name}</span>
-                  <span className="skill__level mono tnum">{it.level}</span>
                 </div>
-                <Meter level={it.level} />
                 <span className="skill__note">{it.note}</span>
               </Item>
             ))}

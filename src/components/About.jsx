@@ -6,18 +6,32 @@ import { Item, Reveal, SectionHead, Stagger } from './ui/index.jsx'
 /* Body copy that lights up word by word as it passes through the viewport.
    The scroll source is the paragraph itself, so the effect is tied to reading
    position rather than to page position. */
-function LitText({ text }) {
+function LitText({ text, highlight }) {
   const ref = useRef(null)
   const reduced = useReducedMotion()
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start 0.85', 'end 0.45'] })
   const words = text.split(' ')
+  /* Words from here to the end are emphasised; -1 when there is no match. */
+  const hlFrom = highlight && text.endsWith(highlight) ? words.length - highlight.split(' ').length : -1
 
-  if (reduced) return <p className="lit" ref={ref}>{text}</p>
+  if (reduced) {
+    if (hlFrom < 0) return <p className="lit" ref={ref}>{text}</p>
+    return (
+      <p className="lit" ref={ref}>
+        {words.slice(0, hlFrom).join(' ')} <mark className="lit__hl">{highlight}</mark>
+      </p>
+    )
+  }
 
   return (
     <p className="lit" ref={ref}>
       {words.map((w, i) => (
-        <Word key={i} progress={scrollYProgress} range={[i / words.length, (i + 1.6) / words.length]}>
+        <Word
+          key={i}
+          progress={scrollYProgress}
+          range={[i / words.length, (i + 1.6) / words.length]}
+          hl={hlFrom >= 0 && i >= hlFrom}
+        >
           {w}
         </Word>
       ))}
@@ -25,10 +39,10 @@ function LitText({ text }) {
   )
 }
 
-function Word({ children, progress, range }) {
+function Word({ children, progress, range, hl }) {
   const opacity = useTransform(progress, range, [0.18, 1])
   return (
-    <motion.span className="lit__w" style={{ opacity }}>
+    <motion.span className={hl ? 'lit__w lit__hl' : 'lit__w'} style={{ opacity }}>
       {children}
     </motion.span>
   )
@@ -68,11 +82,15 @@ function Portrait() {
 export default function About() {
   return (
     <section className="section about" id="about">
-      <SectionHead n="01" title="About" note="Who tends the code, and how they think about it." />
+      <SectionHead n="01" title="About" note={profile.aboutTitle} />
 
       <div className="about__grid">
         <div className="about__main">
-          <LitText text={profile.summary} />
+          <Reveal>
+            <p className="about__tagline">{profile.aboutTagline}</p>
+          </Reveal>
+
+          <LitText text={profile.summary} highlight={profile.summaryHighlight} />
 
           <Stagger className="principles" delay={0.09}>
             {principles.map((p) => (

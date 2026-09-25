@@ -108,7 +108,7 @@ export default function Work() {
     <section className="work" id="work">
       <div className="work__inner">
         <div className="work__bar">
-          <SectionHead n="02" title="Selected work" note="Five systems, and the root network under each one." />
+          <SectionHead n="02" title="Projects" note="One product built from scratch, then the professional work - and the root network under each." />
           <div className="work__meter">
             <span className="mono" aria-hidden>
               {String(idx + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}

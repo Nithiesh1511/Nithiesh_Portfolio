@@ -63,7 +63,7 @@ export default function Path() {
 
   return (
     <section className="section path" id="path">
-      <SectionHead n="05" title="Path" note="Growth rings - where the practice came from." />
+      <SectionHead n="05" title="Experience" note="Growth rings - from automation, to software development, to building across the stack." />
 
       <div className="path__list" ref={ref}>
         <span className="path__spine" ref={spine} aria-hidden>
