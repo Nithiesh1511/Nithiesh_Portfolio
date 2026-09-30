@@ -1307,7 +1307,8 @@ a.case:hover {
 }
 
 .case__title {
-  font-size: clamp(1.4rem, 2.1vw, 1.95rem);
+  font-size: clamp(1.7rem, 2.8vw, 2.5rem);
+  line-height: 1.05;
   font-weight: 800;
   letter-spacing: -0.03em;
 }
@@ -1329,23 +1330,548 @@ a.case:hover {
 .case__right {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.1rem;
 }
 
+/* A small browser window framing the live site - the product, not a diagram. */
+.shot {
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 22px 6px 22px 6px;
+  background: var(--card-2);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform 0.6s var(--ease), box-shadow 0.6s var(--ease), border-color 0.3s;
+}
+
+a.case:hover .shot {
+  transform: translateY(-3px) rotate(-0.4deg);
+  box-shadow: var(--shadow-lg);
+  border-color: color-mix(in srgb, var(--case-accent, var(--signal)) 45%, var(--line));
+}
+
+.shot__bar {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.5rem 0.8rem;
+  border-bottom: 1px solid var(--line-2);
+}
+
+.shot__dots {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.shot__dots i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--line);
+}
+
+.shot__dots i:first-child {
+  background: var(--case-accent, var(--signal));
+}
+
+.shot__url {
+  flex: 1;
+  min-width: 0;
+  padding: 0.18rem 0.7rem;
+  border-radius: 999px;
+  background: var(--line-2);
+  font-size: 0.66rem;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  color: var(--ink-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.shot__view {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--paper-2);
+  container-type: size;
+}
+
+/* ------------------------------------------------ drawn project scenes */
+
+.scene {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  --acc: var(--case-accent, var(--signal));
+  background:
+    radial-gradient(120% 90% at 50% 100%, color-mix(in srgb, var(--acc) 16%, transparent), transparent 62%),
+    linear-gradient(var(--grid) 1px, transparent 1px) 0 0 / 22px 22px,
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / 22px 22px,
+    var(--card-2);
+}
+
+.scene:not([data-on]) * {
+  animation-play-state: paused !important;
+}
+
+/* Leaves drifting down through every scene. */
+.scene__leaves {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.scene__leaf {
+  position: absolute;
+  top: -12%;
+  width: 14px;
+  fill: var(--signal);
+  opacity: 0;
+  animation: leaf-fall 11s linear infinite;
+}
+
+.scene__vein {
+  fill: none;
+  stroke: var(--card);
+  stroke-width: 0.8;
+  opacity: 0.6;
+}
+
+.scene__leaf--1 {
+  left: 14%;
+}
+
+.scene__leaf--2 {
+  left: 80%;
+  width: 11px;
+  fill: var(--amber);
+  animation-delay: -4s;
+  animation-duration: 13s;
+}
+
+.scene__leaf--3 {
+  left: 60%;
+  width: 9px;
+  animation-delay: -8s;
+  animation-duration: 10s;
+}
+
+@keyframes leaf-fall {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.75; }
+  50% { transform: translate(18px, 60cqh) rotate(160deg); }
+  90% { opacity: 0.6; }
+  100% { transform: translate(-6px, 125cqh) rotate(320deg); opacity: 0; }
+}
+
+/* Suvadu - a notebook that opens, turns its pages and sketches a leaf. */
+.nbs {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  perspective: 900px;
+}
+
+.nb {
+  position: relative;
+  height: 64%;
+  aspect-ratio: 3 / 4;
+  transform-style: preserve-3d;
+  transform: translateX(46%) rotateX(16deg) rotateY(-10deg) rotateZ(3deg);
+  animation: nb-float 6s var(--ease-in-out) infinite;
+}
+
+@keyframes nb-float {
+  0%, 100% { transform: translateX(46%) translateY(0) rotateX(16deg) rotateY(-10deg) rotateZ(3deg); }
+  50% { transform: translateX(46%) translateY(-5px) rotateX(18deg) rotateY(-6deg) rotateZ(2deg); }
+}
+
+.nbs__shadow {
+  position: absolute;
+  left: 50%;
+  bottom: 10%;
+  width: 52%;
+  height: 8%;
+  transform: translateX(-40%);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--ink) 22%, transparent), transparent);
+}
+
+.nb__block,
+.nb__face {
+  position: absolute;
+  inset: 0;
+  border-radius: 2px 8px 8px 2px;
+}
+
+.nb__block,
+.nb__face--page {
+  background:
+    repeating-linear-gradient(to bottom, transparent 0 9px, var(--line) 9px 10px) 0 14px / 100% 100% no-repeat,
+    var(--card);
+}
+
+.nb__block {
+  box-shadow:
+    2px 2px 0 var(--paper-2),
+    4px 4px 0 var(--card-2),
+    5px 7px 14px color-mix(in srgb, var(--ink) 20%, transparent);
+}
+
+.nb__doodle {
+  position: absolute;
+  top: 16%;
+  left: 18%;
+  width: 64%;
+  height: 68%;
+}
+
+.nb__ink {
+  fill: none;
+  stroke: var(--acc);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 120;
+  stroke-dashoffset: 120;
+  animation: nb-ink-1 10s var(--ease) infinite;
+}
+
+.nb__ink--2 {
+  animation-name: nb-ink-2;
+}
+
+.nb__ink--3 {
+  stroke-width: 1.6;
+  animation-name: nb-ink-3;
+}
+
+@keyframes nb-ink-1 {
+  0%, 58% { stroke-dashoffset: 120; opacity: 1; }
+  64%, 80% { stroke-dashoffset: 0; opacity: 1; }
+  86%, 100% { stroke-dashoffset: 0; opacity: 0; }
+}
+
+@keyframes nb-ink-2 {
+  0%, 62% { stroke-dashoffset: 120; opacity: 1; }
+  71%, 80% { stroke-dashoffset: 0; opacity: 1; }
+  86%, 100% { stroke-dashoffset: 0; opacity: 0; }
+}
+
+@keyframes nb-ink-3 {
+  0%, 70% { stroke-dashoffset: 120; opacity: 1; }
+  75%, 80% { stroke-dashoffset: 0; opacity: 1; }
+  86%, 100% { stroke-dashoffset: 0; opacity: 0; }
+}
+
+.nb__leaf {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+}
+
+.nb__face {
+  backface-visibility: hidden;
+}
+
+.nb__face--back {
+  transform: rotateY(180deg);
+}
+
+.nb__face--page {
+  border-left: 1px solid var(--line-2);
+}
+
+.nb__face--inside {
+  background: linear-gradient(to left, color-mix(in srgb, var(--ink) 8%, var(--card)), var(--card) 30%);
+}
+
+.nb__face--cover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  background: linear-gradient(145deg, var(--acc), color-mix(in srgb, var(--acc) 55%, var(--bark)));
+  box-shadow: inset 3px 0 0 color-mix(in srgb, var(--ink) 25%, transparent);
+  overflow: hidden;
+}
+
+.nb__frame {
+  position: absolute;
+  inset: 9%;
+  border: 1px solid color-mix(in srgb, var(--paper) 45%, transparent);
+  border-radius: 2px 5px 5px 2px;
+}
+
+.nb__emblem {
+  width: 16%;
+  fill: var(--paper);
+  opacity: 0.9;
+}
+
+.nb__emblem .scene__vein {
+  stroke: var(--acc);
+}
+
+.nb__word {
+  font-size: clamp(0.8rem, 6cqh, 1.1rem);
+  font-weight: 800;
+  font-style: italic;
+  letter-spacing: -0.01em;
+  color: var(--paper);
+}
+
+.nb__sub {
+  font-size: 0.42rem;
+  color: color-mix(in srgb, var(--paper) 75%, transparent);
+}
+
+.nb__band {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 14%;
+  width: 4px;
+  background: color-mix(in srgb, var(--bark) 80%, var(--ink));
+  opacity: 0.8;
+}
+
+/* Cover first, then two pages; they close again in reverse. */
+.nb__cover {
+  transform: translateZ(3px);
+  animation: nb-cover 10s var(--ease-in-out) infinite;
+}
+
+.nb__page--1 {
+  transform: translateZ(2px);
+  animation: nb-page-1 10s var(--ease-in-out) infinite;
+}
+
+.nb__page--2 {
+  transform: translateZ(1px);
+  animation: nb-page-2 10s var(--ease-in-out) infinite;
+}
+
+@keyframes nb-cover {
+  0%, 10% { transform: translateZ(3px) rotateY(0deg); }
+  24%, 84% { transform: translateZ(3px) rotateY(-170deg); }
+  96%, 100% { transform: translateZ(3px) rotateY(0deg); }
+}
+
+@keyframes nb-page-1 {
+  0%, 30% { transform: translateZ(2px) rotateY(0deg); }
+  42%, 82% { transform: translateZ(2px) rotateY(-166deg); }
+  93%, 100% { transform: translateZ(2px) rotateY(0deg); }
+}
+
+@keyframes nb-page-2 {
+  0%, 42% { transform: translateZ(1px) rotateY(0deg); }
+  54%, 80% { transform: translateZ(1px) rotateY(-162deg); }
+  90%, 100% { transform: translateZ(1px) rotateY(0deg); }
+}
+
+/* Doctor's Water - the cap lifts, a stream fills the jug, then it is capped. */
+.jug {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.jug__floor {
+  fill: color-mix(in srgb, var(--ink) 10%, transparent);
+}
+
+.jug__grass,
+.jug__rib,
+.jug__shine,
+.jug__cap path {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.jug__grass {
+  stroke: var(--signal);
+  stroke-width: 1.6;
+  opacity: 0.55;
+}
+
+.jug__glass {
+  fill: color-mix(in srgb, var(--acc) 7%, transparent);
+}
+
+.jug__shell {
+  fill: none;
+  stroke: color-mix(in srgb, var(--acc) 70%, var(--ink));
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.jug__rib {
+  stroke: color-mix(in srgb, var(--acc) 40%, transparent);
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+}
+
+.jug__shine {
+  stroke: var(--card);
+  stroke-width: 3;
+  opacity: 0.55;
+}
+
+.jug__stream {
+  fill: color-mix(in srgb, var(--acc) 70%, var(--card));
+  transform-origin: 160px 0;
+  opacity: 0;
+  animation: jug-stream 9s var(--ease-in-out) infinite;
+}
+
+.jug__level {
+  transform: translateY(110px);
+  animation: jug-level 9s var(--ease-in-out) infinite;
+}
+
+.jug__wave {
+  fill: color-mix(in srgb, var(--acc) 62%, transparent);
+  animation: jug-wave 2.4s linear infinite;
+}
+
+.jug__wave--back {
+  fill: color-mix(in srgb, var(--acc) 30%, transparent);
+  animation-name: jug-wave-back;
+  animation-duration: 3.6s;
+}
+
+.jug__bubble {
+  fill: color-mix(in srgb, var(--card) 80%, transparent);
+  opacity: 0;
+  animation: jug-bubble 3s var(--ease) infinite;
+}
+
+.jug__bubble--2 {
+  animation-delay: -0.8s;
+}
+
+.jug__bubble--3 {
+  animation-delay: -1.6s;
+  animation-duration: 3.6s;
+}
+
+.jug__bubble--4 {
+  animation-delay: -2.3s;
+}
+
+.jug__label rect {
+  fill: var(--card);
+  stroke: color-mix(in srgb, var(--acc) 45%, transparent);
+  opacity: 0.94;
+}
+
+.jug__label text {
+  font-family: var(--display);
+  font-size: 6.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  fill: var(--ink-2);
+}
+
+.jug__label .jug__word {
+  font-size: 10px;
+  fill: var(--acc);
+}
+
+.jug__drop {
+  fill: var(--acc);
+}
+
+.jug__ring {
+  fill: color-mix(in srgb, var(--acc) 55%, var(--ink));
+}
+
+.jug__cap {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: jug-cap 9s var(--ease-in-out) infinite;
+}
+
+.jug__cap rect {
+  fill: color-mix(in srgb, var(--acc) 80%, var(--ink));
+}
+
+.jug__cap path {
+  stroke: color-mix(in srgb, var(--card) 35%, transparent);
+  stroke-width: 1.2;
+}
+
+@keyframes jug-cap {
+  0%, 4% { transform: translate(0, 0) rotate(0deg); }
+  12%, 72% { transform: translate(34px, -16px) rotate(28deg); }
+  82%, 100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+@keyframes jug-stream {
+  0%, 12% { opacity: 0; transform: scaleY(0); }
+  18%, 68% { opacity: 1; transform: scaleY(1); }
+  74%, 100% { opacity: 0; transform: scaleY(1); }
+}
+
+@keyframes jug-level {
+  0%, 16% { transform: translateY(192px); opacity: 1; }
+  70%, 90% { transform: translateY(84px); opacity: 1; }
+  97% { transform: translateY(84px); opacity: 0; }
+  100% { transform: translateY(192px); opacity: 0; }
+}
+
+@keyframes jug-wave {
+  from { transform: translateX(0); }
+  to { transform: translateX(-40px); }
+}
+
+@keyframes jug-wave-back {
+  from { transform: translate(-40px, -2px); }
+  to { transform: translate(0, -2px); }
+}
+
+@keyframes jug-bubble {
+  0% { transform: translateY(60px); opacity: 0; }
+  30% { opacity: 0.9; }
+  100% { transform: translateY(0); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene * {
+    animation: none !important;
+  }
+}
+
+/* Facts as small leaf-cut tiles under the preview. */
 .case__facts {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.7rem 1rem;
+  gap: 0.55rem;
+}
+
+.case__facts > div {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--line-2);
+  border-radius: 12px 4px 12px 4px;
+  background: color-mix(in srgb, var(--case-accent, var(--signal)) 6%, transparent);
 }
 
 .case__facts dt {
   color: var(--ink-4);
-  margin-bottom: 0.15rem;
+  font-size: 0.66rem;
+  margin-bottom: 0.2rem;
 }
 
 .case__facts dd {
   margin: 0;
-  font-size: 0.82rem;
+  font-size: 0.84rem;
+  font-weight: 600;
   color: var(--ink-2);
 }
 
@@ -1363,8 +1889,25 @@ a.case:hover {
 .case__link {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.35rem;
+  padding: 0.4rem 0.95rem;
+  border: 1px solid color-mix(in srgb, var(--case-accent, var(--signal)) 45%, transparent);
+  border-radius: 999px;
   color: var(--case-accent, var(--signal));
+  transition: background 0.3s, color 0.3s;
+}
+
+.case__link svg {
+  transition: transform 0.3s var(--ease);
+}
+
+a.case:hover .case__link {
+  background: var(--case-accent, var(--signal));
+  color: var(--paper);
+}
+
+a.case:hover .case__link svg {
+  transform: translate(2px, -2px);
 }
 
 .chips {
@@ -1391,81 +1934,6 @@ a.case:hover {
   background: transparent;
   color: var(--ink-3);
   border-color: var(--line);
-}
-
-/* ------------------------------------------------------- topology diagram */
-
-.flow {
-  border: 1px solid var(--line);
-  border-radius: 24px 8px 24px 8px;
-  background: linear-gradient(to bottom, var(--card-2), color-mix(in srgb, var(--bark) 7%, var(--card-2)));
-  padding: 0.4rem;
-  --accent: var(--signal);
-}
-
-.flow[data-accent='teal'] {
-  --accent: var(--teal);
-}
-
-.flow[data-accent='amber'] {
-  --accent: var(--amber);
-}
-
-.flow svg {
-  width: 100%;
-  height: auto;
-  display: block;
-  color: var(--ink-4);
-}
-
-.flow__grid {
-  color: var(--bark);
-  opacity: 0.45;
-}
-
-/* Edges are roots: solid, rounded, bark-coloured. */
-.flow__edge {
-  stroke: var(--bark);
-  stroke-width: 1.6;
-  stroke-linecap: round;
-  opacity: 0.55;
-}
-
-.flow__packet {
-  fill: var(--accent);
-}
-
-.flow__node rect {
-  fill: var(--card);
-  stroke: var(--line);
-  stroke-width: 1;
-}
-
-.flow__node text {
-  font-family: var(--mono);
-  font-size: 7px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  fill: var(--ink-2);
-  text-transform: uppercase;
-}
-
-.flow__node--core rect {
-  fill: var(--signal);
-  stroke: var(--signal);
-}
-
-.flow__node--core text {
-  fill: var(--paper);
-}
-
-.flow__node--vendor rect {
-  stroke: var(--accent);
-  stroke-opacity: 0.55;
-}
-
-.flow__node--edge rect {
-  stroke-dasharray: 3 2;
 }
 
 /* ------------------------------------------------------------------ stack */

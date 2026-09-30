@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, useMotionValue, useTransform } from 'framer-motion'
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react'
 import { projects } from '../data/profile.js'
-import FlowDiagram from './FlowDiagram.jsx'
 import { SectionHead } from './ui/index.jsx'
+import ProjectScene from './ProjectScene.jsx'
 
 function Card({ p }) {
   const Tag = p.link ? 'a' : 'article'
@@ -30,7 +30,21 @@ function Card({ p }) {
         </div>
 
         <div className="case__right">
-          <FlowDiagram flow={p.flow} accent={p.accent} />
+          {p.scene && (
+            <figure className="shot">
+              <div className="shot__bar" aria-hidden>
+                <span className="shot__dots">
+                  <i />
+                  <i />
+                  <i />
+                </span>
+                <span className="shot__url mono">{p.link.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
+              </div>
+              <div className="shot__view">
+                <ProjectScene scene={p.scene} />
+              </div>
+            </figure>
+          )}
           <dl className="case__facts">
             {p.facts.map(([k, v]) => (
               <div key={k}>
@@ -43,7 +57,7 @@ function Card({ p }) {
             <span className="mono case__role">{p.role}</span>
             {p.link && (
               <span className="case__link mono">
-                source <ArrowUpRight size={13} strokeWidth={2} />
+                {p.linkLabel ?? 'source'} <ArrowUpRight size={13} strokeWidth={2} />
               </span>
             )}
           </div>
@@ -108,7 +122,7 @@ export default function Work() {
     <section className="work" id="work">
       <div className="work__inner">
         <div className="work__bar">
-          <SectionHead n="02" title="Projects" note="One product built from scratch, then the professional work - and the root network under each." />
+          <SectionHead n="02" title="Projects" note="Two things built from scratch - designed, coded and shipped end to end." />
           <div className="work__meter">
             <span className="mono" aria-hidden>
               {String(idx + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}

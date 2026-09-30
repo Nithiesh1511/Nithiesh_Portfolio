@@ -61,6 +61,7 @@ export const ticker = [
   'React',
   'TypeScript',
   'JavaScript',
+  'three.js',
   'SQL Server',
   'Azure',
   'Supabase',
@@ -93,9 +94,8 @@ export const principles = [
   },
 ]
 
-/* `flow` drives the animated topology diagram on each case card.
-   Coordinates are in a 300 x 150 viewBox. Suvadu leads as the featured
-   personal build; the rest is professional work. */
+/* Personal builds, each linking to its live site. `scene` picks the drawn
+   animation (ProjectScene.jsx) shown in a browser frame on the card. */
 export const projects = [
   {
     id: 'suvadu',
@@ -115,164 +115,33 @@ export const projects = [
       ['STATUS', 'Active'],
     ],
     stack: ['React', 'TypeScript', 'Vite', 'Supabase', 'Tailwind CSS', 'three.js'],
-    link: 'https://github.com/Nithiesh1511/Suvadu',
+    link: 'https://nithiesh1511.github.io/Suvadu/',
+    scene: 'notebook',
+    linkLabel: 'live site',
     accent: 'signal',
-    flow: {
-      nodes: [
-        { id: 'ui', label: 'React UI', x: 40, y: 75, kind: 'edge' },
-        { id: 'ctx', label: 'Storefront', x: 150, y: 40, kind: 'core' },
-        { id: 'admin', label: 'Admin', x: 150, y: 112, kind: 'core' },
-        { id: 'db', label: 'Supabase', x: 266, y: 75, kind: 'vendor' },
-      ],
-      edges: [
-        ['ui', 'ctx'],
-        ['ui', 'admin'],
-        ['ctx', 'db'],
-        ['admin', 'db'],
-      ],
-    },
   },
   {
-    id: 'tmx',
+    id: 'doctors-water',
     num: '02',
-    title: 'TMX Healthcare Platform',
-    kind: 'PROFESSIONAL · BACKEND PLATFORM',
-    year: '2025 -',
-    role: 'Backend & APIs',
+    title: "Doctor's Water",
+    kind: 'PERSONAL · 3D WEB EXPERIENCE',
+    year: '2026',
+    role: 'Designed & built solo',
     summary:
-      'The backend behind a patient-facing healthcare product: one clean REST API over clinical, insurance and operational services.',
+      "A scroll-driven 3D product film for a Coimbatore packaged-water brand - the pour, the fill and the seal, played out as you scroll.",
     detail:
-      'I worked on the .NET 8 services that sit between the product and a set of third-party healthcare vendors. Each vendor speaks a different dialect - GraphQL, X12 EDI, webhooks - so the backend maps them onto one internal contract, stores state in Cosmos DB and keeps both sides in step when something changes on either end.',
+      'Built with React Three Fiber on three.js: a can uncaps and tips, water pours into a 20L bottle, fills it and gets capped, then the page settles into specs and contact. The water is simulated rather than faked - a stylised gravity model, a jet that pinches into pearls the way real streams do, splashes, crowns, ripples and bubbles - rendered through transmission and refraction materials with post-processing. GSAP and Lenis keep the camera choreography locked to the scroll, and the brand palette and copy come straight off the label.',
     facts: [
-      ['SURFACE', 'REST + Webhooks'],
-      ['UPSTREAM', 'Healthie GraphQL'],
-      ['STORE', 'Cosmos DB'],
-      ['RUNTIME', '.NET 8 on Azure'],
+      ['RENDER', 'React Three Fiber'],
+      ['WATER', 'Custom pour physics'],
+      ['MOTION', 'GSAP + Lenis scroll'],
+      ['STATUS', 'Live on GitHub Pages'],
     ],
-    stack: ['.NET 8', 'REST APIs', 'GraphQL', 'Azure', 'Cosmos DB'],
+    stack: ['React', 'three.js', 'React Three Fiber', 'Drei', 'Post-processing', 'GSAP', 'Vite'],
+    link: 'https://nithiesh1511.github.io/Doctor_Water/',
+    scene: 'water',
+    linkLabel: 'live site',
     accent: 'teal',
-    flow: {
-      nodes: [
-        { id: 'app', label: 'Product', x: 26, y: 75, kind: 'edge' },
-        { id: 'api', label: 'TMX API', x: 150, y: 75, kind: 'core' },
-        { id: 'ehr', label: 'Healthie', x: 274, y: 28, kind: 'vendor' },
-        { id: 'pay', label: 'Payers', x: 274, y: 75, kind: 'vendor' },
-        { id: 'rx', label: 'DoseSpot', x: 274, y: 122, kind: 'vendor' },
-      ],
-      edges: [
-        ['app', 'api'],
-        ['api', 'ehr'],
-        ['api', 'pay'],
-        ['api', 'rx'],
-      ],
-    },
-  },
-  {
-    id: 'ehr',
-    num: '03',
-    title: 'EHR Automation System',
-    kind: 'PROFESSIONAL · APP + AUTOMATION',
-    year: '2024 -',
-    role: 'Backend & automation',
-    summary:
-      'An Electronic Health Record workflow that pulls, processes and files data automatically - so nobody has to re-key it.',
-    detail:
-      'I built .NET Core services on SQL Server as the system of record, Zoho RPA bots to extract data from applications that have no API, Azure WebJobs for scheduled and background runs, and Azure DevOps pipelines that carry every change from commit to deployment. Web app, database, automation and cloud, working as one.',
-    facts: [
-      ['BACKEND', '.NET Core'],
-      ['STORE', 'SQL Server'],
-      ['AUTOMATION', 'Zoho RPA'],
-      ['DELIVERY', 'Azure DevOps CI/CD'],
-    ],
-    stack: ['.NET Core', 'SQL Server', 'Zoho RPA', 'Azure WebJobs', 'Azure DevOps'],
-    accent: 'amber',
-    flow: {
-      nodes: [
-        { id: 'src', label: 'Source apps', x: 40, y: 40, kind: 'edge' },
-        { id: 'job', label: 'WebJobs', x: 40, y: 112, kind: 'vendor' },
-        { id: 'rpa', label: 'Zoho RPA', x: 138, y: 40, kind: 'vendor' },
-        { id: 'api', label: '.NET Core', x: 180, y: 112, kind: 'core' },
-        { id: 'db', label: 'SQL Server', x: 262, y: 75, kind: 'core' },
-      ],
-      edges: [
-        ['src', 'rpa'],
-        ['job', 'rpa'],
-        ['job', 'api'],
-        ['rpa', 'api'],
-        ['api', 'db'],
-      ],
-    },
-  },
-  {
-    id: 'eligibility',
-    num: '04',
-    title: 'Eligibility & Prior Authorization',
-    kind: 'PROFESSIONAL · API SERVICE',
-    year: '2025',
-    role: 'Design & implementation',
-    summary:
-      'Real-time insurance coverage checks, turned from a dense payer document into data the app can simply render.',
-    detail:
-      'I wrapped the X12 270/271 eligibility exchange behind a single API call. The service builds the request, sends it through the Stedi clearinghouse and parses the response into a typed model - plan status, copay, deductible, authorization rules - so problems show up on screen before a claim is built, not weeks later.',
-    facts: [
-      ['TRANSACTION', 'X12 270 / 271'],
-      ['CLEARINGHOUSE', 'Stedi'],
-      ['MODE', 'Real-time'],
-      ['OUTPUT', 'Typed coverage model'],
-    ],
-    stack: ['.NET 8', 'Web API', 'EDI 270/271', 'Stedi'],
-    accent: 'teal',
-    flow: {
-      nodes: [
-        { id: 'req', label: 'Request', x: 26, y: 75, kind: 'edge' },
-        { id: 'svc', label: '270 build', x: 116, y: 75, kind: 'core' },
-        { id: 'ch', label: 'Stedi', x: 206, y: 75, kind: 'vendor' },
-        { id: 'payer', label: 'Payer', x: 274, y: 40, kind: 'vendor' },
-        { id: 'parse', label: '271 parse', x: 274, y: 116, kind: 'core' },
-      ],
-      edges: [
-        ['req', 'svc'],
-        ['svc', 'ch'],
-        ['ch', 'payer'],
-        ['ch', 'parse'],
-      ],
-    },
-  },
-  {
-    id: 'clinical',
-    num: '05',
-    title: 'Labs & Medication Flows',
-    kind: 'PROFESSIONAL · INTEGRATIONS',
-    year: '2025',
-    role: 'Backend & integrations',
-    summary:
-      'Lab orders, results and e-prescribing wired into the product, across external clinical systems.',
-    detail:
-      'Orders leave the platform, results come back asynchronously and prescriptions round-trip through DoseSpot. Events can arrive late, out of order or twice, so I built the handlers to be idempotent and to reconcile every update against the record that started it - the data stays right even when the network does not behave.',
-    facts: [
-      ['INGRESS', 'Async webhooks'],
-      ['PARTNERS', 'DoseSpot, Lab APIs'],
-      ['PATTERN', 'Idempotent reconcile'],
-      ['STATE', 'Order-anchored'],
-    ],
-    stack: ['.NET 8', 'Webhooks', 'Lab APIs', 'DoseSpot'],
-    accent: 'amber',
-    flow: {
-      nodes: [
-        { id: 'order', label: 'Order', x: 26, y: 46, kind: 'core' },
-        { id: 'lab', label: 'Lab', x: 150, y: 26, kind: 'vendor' },
-        { id: 'rx', label: 'DoseSpot', x: 150, y: 124, kind: 'vendor' },
-        { id: 'hook', label: 'Webhook', x: 214, y: 75, kind: 'edge' },
-        { id: 'rec', label: 'Reconcile', x: 274, y: 75, kind: 'core' },
-      ],
-      edges: [
-        ['order', 'lab'],
-        ['order', 'rx'],
-        ['lab', 'hook'],
-        ['rx', 'hook'],
-        ['hook', 'rec'],
-      ],
-    },
   },
 ]
 
@@ -285,6 +154,7 @@ export const stack = [
       { name: 'HTML & CSS', note: 'Semantic markup, modern layout, responsive UI' },
       { name: 'JavaScript & TypeScript', note: 'Interactive, typed front-end code' },
       { name: 'React', note: 'Component UIs - Suvadu and this site' },
+      { name: 'three.js & React Three Fiber', note: "3D scenes - Doctor's Water, this site's forest" },
       { name: 'Razor & MVC views', note: 'Server-rendered .NET interfaces' },
     ],
   },
@@ -362,7 +232,7 @@ export const timeline = [
     period: 'Aug 2024 - 2026',
     title: 'Junior Software Engineer',
     org: 'iTech Software Group',
-    text: 'Worked on healthcare and EHR software with .NET Core, MVC, Web APIs, SQL Server and Azure. Built backend services, web application features, database-driven workflows, reporting with Microsoft Graph, Zoho RPA automation and the integrations behind several of the projects above.',
+    text: 'Worked on healthcare and EHR software with .NET Core, MVC, Web APIs, SQL Server and Azure. Built backend services, web application features, database-driven workflows, reporting with Microsoft Graph, Zoho RPA automation and integrations with third-party healthcare systems.',
     tags: ['.NET Core', 'MVC', 'Web API', 'SQL Server', 'Azure', 'Microsoft Graph', 'Zoho RPA'],
   },
   {
