@@ -1,15 +1,50 @@
-import { useRef, useState } from 'react'
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+import {
+  animate,
+  motion,
+  useInView,
+  useMotionValue,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from 'framer-motion'
 import { principles, profile, spec } from '../data/profile.js'
 import { Item, Reveal, SectionHead, Stagger } from './ui/index.jsx'
 
 /* Body copy that lights up word by word as it passes through the viewport.
    The scroll source is the paragraph itself, so the effect is tied to reading
-   position rather than to page position. */
+   position rather than to page position. If the reader lingers on it, the
+   rest of the paragraph lights up anyway, so nobody has to scroll to read;
+   the moment they scroll again, the words go back to following the scroll. */
+const LINGER_MS = 3000
+
 function LitText({ text, highlight }) {
   const ref = useRef(null)
   const reduced = useReducedMotion()
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start 0.85', 'end 0.45'] })
+  const inView = useInView(ref, { amount: 0.3 })
+  /* 0 → 1 once the reader has held still for LINGER_MS; sweeps through the
+     words in the same order the scroll would. */
+  const linger = useMotionValue(0)
+  const timer = useRef(0)
+
+  const restart = () => {
+    clearTimeout(timer.current)
+    if (reduced || !inView) return
+    timer.current = setTimeout(() => animate(linger, 1, { duration: 1.4, ease: 'easeOut' }), LINGER_MS)
+  }
+
+  useEffect(() => {
+    restart()
+    return () => clearTimeout(timer.current)
+  }, [inView, reduced]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  /* Any scroll hands control back to the scroll and restarts the wait. */
+  useMotionValueEvent(scrollYProgress, 'change', () => {
+    if (linger.get() > 0) animate(linger, 0, { duration: 0.6, ease: 'easeOut' })
+    restart()
+  })
   const words = text.split(' ')
   /* Words from here to the end are emphasised; -1 when there is no match. */
   const hlFrom = highlight && text.endsWith(highlight) ? words.length - highlight.split(' ').length : -1
@@ -29,7 +64,10 @@ function LitText({ text, highlight }) {
         <Word
           key={i}
           progress={scrollYProgress}
-          range={[i / words.length, (i + 1.6) / words.length]}
+          linger={linger}
+          /* Spread over n + 0.6 so the last word's ramp ends at 1 and it
+             reaches full brightness like the rest. */
+          range={[i / (words.length + 0.6), (i + 1.6) / (words.length + 0.6)]}
           hl={hlFrom >= 0 && i >= hlFrom}
         >
           {w}
@@ -39,8 +77,10 @@ function LitText({ text, highlight }) {
   )
 }
 
-function Word({ children, progress, range, hl }) {
-  const opacity = useTransform(progress, range, [0.18, 1])
+function Word({ children, progress, linger, range, hl }) {
+  const byScroll = useTransform(progress, range, [0.18, 1])
+  const byLinger = useTransform(linger, range, [0.18, 1])
+  const opacity = useTransform(() => Math.max(byScroll.get(), byLinger.get()))
   return (
     <motion.span className={hl ? 'lit__w lit__hl' : 'lit__w'} style={{ opacity }}>
       {children}
