@@ -45,11 +45,11 @@ const PALETTE = {
 /* Trees are spread across the width and alternate front and back, so no two
    trail markers ever stack on top of each other in the camera's view. */
 const TREES = [
-  { id: 'azure', label: 'Azure', sub: 'Runtime', x: -3.3, z: -0.5, kind: 'round', h: 1.1, colour: 'fern' },
-  { id: 'dosespot', label: 'DoseSpot', sub: 'e-Rx', x: -1.9, z: 1.5, kind: 'pine', h: 0.85, colour: 'amber' },
-  { id: 'stedi', label: 'Stedi', sub: 'X12 270/271', x: 1.7, z: 1.6, kind: 'round', h: 0.8, colour: 'lichen' },
-  { id: 'cosmos', label: 'Cosmos DB', sub: 'State', x: 2.5, z: -1.3, kind: 'pine', h: 1.25, colour: 'lichen' },
-  { id: 'healthie', label: 'Healthie', sub: 'GraphQL', x: 3.8, z: 0.4, kind: 'pine', h: 1.05, colour: 'fern' },
+  { id: 'dotnet', label: '.NET', sub: 'C# · Web API · MVC', x: -3.3, z: -0.5, kind: 'round', h: 1.1, colour: 'fern' },
+  { id: 'react', label: 'React', sub: 'TypeScript · JavaScript', x: -1.9, z: 1.5, kind: 'pine', h: 0.85, colour: 'amber' },
+  { id: 'sqlserver', label: 'SQL Server', sub: 'Data', x: 1.7, z: 1.6, kind: 'round', h: 0.8, colour: 'lichen' },
+  { id: 'azure', label: 'Azure', sub: 'Cloud · DevOps', x: 2.5, z: -1.3, kind: 'pine', h: 1.25, colour: 'lichen' },
+  { id: 'automation', label: 'Zoho RPA', sub: 'Automation', x: 3.8, z: 0.4, kind: 'pine', h: 1.05, colour: 'fern' },
 ]
 
 function treeBase({ x, z }) {
