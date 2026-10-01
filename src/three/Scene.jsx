@@ -13,14 +13,14 @@ import ForestGrove from './ForestGrove.jsx'
    hard edge. `flat` disables tone mapping so the paper stays paper.
    --------------------------------------------------------------------------- */
 
-export default function Scene({ still = false, paused = false, theme = 'light' }) {
+export default function Scene({ still = false, paused = false, theme = 'light', compact = false }) {
   const dark = theme === 'dark'
   const paper = dark ? '#0b1510' : '#f2efe2'
 
   return (
     <Canvas
       flat
-      dpr={[1, 1.75]}
+      dpr={compact ? [1, 1.5] : [1, 1.75]}
       frameloop={still || paused ? 'demand' : 'always'}
       camera={{ position: [0, 0.6, 9.6], fov: 38, near: 0.1, far: 60 }}
       gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
@@ -65,7 +65,9 @@ export default function Scene({ still = false, paused = false, theme = 'light' }
 
         {/* Bloom picks out the seed, spores, mushrooms and fireflies. The
             threshold is high so the foliage never glows. */}
-        <EffectComposer enabled={!still} multisampling={4}>
+        {/* Multisampled framebuffers flicker on many phone GPUs; there the
+            canvas's own antialiasing is used and bloom is skipped. */}
+        <EffectComposer enabled={!still && !compact} multisampling={4}>
           <Bloom intensity={dark ? 1.3 : 0.6} luminanceThreshold={0.72} luminanceSmoothing={0.3} mipmapBlur />
         </EffectComposer>
       </Suspense>

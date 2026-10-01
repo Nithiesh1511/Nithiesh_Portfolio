@@ -3,6 +3,7 @@ import { motion, useInView, useReducedMotion, useScroll, useTransform } from 'fr
 import { ArrowDownRight, ArrowUpRight, Github, Linkedin, Sprout, TreePine } from 'lucide-react'
 import { profile } from '../data/profile.js'
 import { EASE } from '../lib/motion.js'
+import { useMedia } from '../hooks/useTheme.js'
 import { LocalClock, MaskedLines } from './ui/index.jsx'
 
 const Scene = lazy(() => import('../three/Scene.jsx'))
@@ -14,20 +15,25 @@ export default function Hero({ ready, theme }) {
   /* The grove only renders while the hero is on screen; scrolled past it,
      the GPU is left alone for the rest of the page. */
   const onScreen = useInView(ref, { margin: '0px 0px 0px 0px' })
+  /* On phones the grove is its own band in the column, so it scrolls away
+     with the page. Animating opacity/transform on a WebGL canvas's parent
+     makes mobile GPUs flicker, so the scene is left still there. */
+  const compact = useMedia('(max-width: 900px)')
+  const sceneStill = reduced || compact
 
   /* Copy and scene travel at different rates, so the two planes separate as
      the page leaves rather than sliding away as one sheet. */
   const copyY = useTransform(scrollYProgress, [0, 1], [0, reduced ? 0 : -90])
   const copyFade = useTransform(scrollYProgress, [0, 0.65], [1, reduced ? 1 : 0])
-  const sceneY = useTransform(scrollYProgress, [0, 1], [0, reduced ? 0 : 120])
-  const sceneFade = useTransform(scrollYProgress, [0, 0.8], [1, reduced ? 1 : 0.15])
+  const sceneY = useTransform(scrollYProgress, [0, 1], [0, sceneStill ? 0 : 120])
+  const sceneFade = useTransform(scrollYProgress, [0, 0.8], [1, sceneStill ? 1 : 0.15])
 
   return (
     <section className="hero" id="top" ref={ref}>
       <motion.div className="hero__canvas" style={{ y: sceneY, opacity: sceneFade }}>
         {ready && (
           <Suspense fallback={null}>
-            <Scene still={!!reduced} paused={!onScreen} theme={theme} />
+            <Scene still={!!reduced} paused={!onScreen} theme={theme} compact={compact} />
           </Suspense>
         )}
         <span className="hero__canvas-caption mono" aria-hidden>

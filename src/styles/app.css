@@ -2894,15 +2894,44 @@ a.seedling__cert:hover {
     order: 1;
   }
 
+  /* svh, not vh: vh grows and shrinks with the mobile URL bar, and every
+     resize clears the WebGL buffer - the grove blinked on each scroll. */
   .hero__canvas {
     order: 2;
     position: relative;
     inset: auto;
-    height: 38vh;
+    height: 38svh;
     min-height: 260px;
     margin-top: 1.5rem;
     mask-image: none;
     -webkit-mask-image: none;
+    contain: layout paint;
+  }
+
+  /* The fixed sky orb lands on the copy at this width, so the sun moves into
+     the grove's own sky, behind the canopy. */
+  .woodland__orb-wrap {
+    display: none;
+  }
+
+  .hero__canvas::before {
+    content: '';
+    position: absolute;
+    top: 4%;
+    right: 12%;
+    width: clamp(56px, 16vw, 84px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 40%, #fff6d6, var(--glow) 70%);
+    box-shadow: 0 0 60px 22px color-mix(in srgb, var(--glow) 30%, transparent);
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  :root[data-theme='dark'] .hero__canvas::before {
+    background: radial-gradient(circle at 38% 38%, #f4f7ec, #c9d5c0 62%, #a9b8a2);
+    box-shadow: 0 0 46px 14px rgba(220, 235, 210, 0.16), inset -10px -8px 0 rgba(0, 0, 0, 0.12);
+    opacity: 0.85;
   }
 
   .hero__canvas-caption {
